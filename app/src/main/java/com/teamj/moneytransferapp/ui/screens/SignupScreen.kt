@@ -272,7 +272,7 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
                         Icon(
                             painter = painterResource(id = icon1),
                             contentDescription = "Person Icon",
-                            tint = if (passwordError) P300 else Color.Gray,
+                            tint = if (passwordError || passwordPatternError) P300 else Color.Gray,
                         )
                     }
                 },
@@ -286,8 +286,8 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
                     unfocusedContainerColor = G10,
                     disabledContainerColor = G10,
                     errorContainerColor = G10,
-                    focusedBorderColor = if (passwordError) P300 else Color.Gray,
-                    unfocusedBorderColor = if (passwordError) P300 else Color.Gray,
+                    focusedBorderColor = if (passwordError || passwordPatternError) P300 else Color.Gray,
+                    unfocusedBorderColor = if (passwordError || passwordPatternError) P300 else Color.Gray,
                     focusedLabelColor = Color.Gray,
                 )
             )
@@ -346,7 +346,7 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
                         Icon(
                             painter = painterResource(id = icon2),
                             contentDescription = "Person Icon",
-                            tint = if (confirmPasswordError) P300 else Color.Gray,
+                            tint = if (confirmPasswordError || passwordmatchError) P300 else Color.Gray,
                         )
                     }
                 },
@@ -360,8 +360,8 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
                     unfocusedContainerColor = G10,
                     disabledContainerColor = G10,
                     errorContainerColor = G10,
-                    focusedBorderColor = if (confirmPasswordError) P300 else Color.Gray,
-                    unfocusedBorderColor = if (confirmPasswordError) P300 else Color.Gray,
+                    focusedBorderColor = if (confirmPasswordError || passwordmatchError) P300 else Color.Gray,
+                    unfocusedBorderColor = if (confirmPasswordError || passwordmatchError) P300 else Color.Gray,
                     focusedLabelColor = Color.Gray,
                 )
             )
