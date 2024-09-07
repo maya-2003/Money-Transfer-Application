@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Money Transfer App</string>
+    <string name="country_initial"></string>
+    <string name="egypt">Egypt</string>
+    <string name="emirates">United Arab Emirates</string>
+    <string name="qatar">Qatar</string>
+    <string name="united_states">United States</string>
 </resources>

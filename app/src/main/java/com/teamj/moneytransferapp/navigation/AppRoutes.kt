@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.teamj.moneytransferapp.ui.screens.CompleteProfileScreen
+import com.teamj.moneytransferapp.ui.screens.SignupScreen
 
 object  Route{
     const val SIGNUP = "signup"
@@ -20,8 +22,14 @@ object  Route{
     const val TRANSACTION = "transaction"
 }
 @Composable
-fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
-    val navController= rememberNavController()
+fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Route.SIGNUP) {
+        composable(Route.SIGNUP) {
+            SignupScreen(navController)
+        }
+        composable(Route.CONTINUE_SIGNUP) {
+            CompleteProfileScreen(navController)
+        }
     }
 }
