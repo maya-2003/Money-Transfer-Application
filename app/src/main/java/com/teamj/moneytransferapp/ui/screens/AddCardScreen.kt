@@ -71,6 +71,10 @@ fun AddCardScreen(navController: NavController,modifier: Modifier = Modifier) {
                 title = {
                     Text(
                         "Add Card",
+                        color = G900,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_medium))
+
                     )
                 },
                 actions = {
