@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="P50">#f3e9eb</color>
+    <color name="P75">#cea3ac</color>
+    <color name="P100">#b97d8a</color>
+    <color name="P200">#9b4457</color>
+    <color name="P300">#871e35</color>
+    <color name="P400">#5f1525</color>
+    <color name="P500">#521220</color>
+
+
+    <color name="lightgold">#FFF8E7</color>
+    <color name="lightpink">#FFEAEE</color>
+    <color name="darkpurple">#871E35</color>
+    <color name="grey">#898886</color>
+
 </resources>
