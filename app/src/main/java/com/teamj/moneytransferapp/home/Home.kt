@@ -1,0 +1,137 @@
+package com.teamj.moneytransferapp.home
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.maya.moneytransferapp.Transaction
+import com.maya.moneytransferapp.TransactionCard
+import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.ui.theme.G100
+import com.teamj.moneytransferapp.ui.theme.G40
+import com.teamj.moneytransferapp.ui.theme.G900
+import com.teamj.moneytransferapp.ui.theme.P300
+import com.teamj.moneytransferapp.ui.theme.RedGrad
+import com.teamj.moneytransferapp.ui.theme.YellowGrad
+
+@Composable
+fun HomeScreen(transactions: List<Transaction>, balance: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .background(brush = Brush.verticalGradient(colors = listOf(YellowGrad, RedGrad)))
+    ) {
+
+        Text(
+            text = "Welcome back, ",
+//            style = MaterialTheme.typography.h6
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+
+            val first_initial = stringResource(id = R.string.first_name)[0]
+            val second_initial = stringResource(id = R.string.last_name)[0]
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(G40)
+            ) {
+                Text(
+                    text = "$first_initial$second_initial",
+                    color = G100,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Text(
+                text = "${stringResource(id = R.string.first_name)} ${stringResource(id = R.string.last_name)}",
+                fontSize = 20.sp,
+                fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
+                fontWeight = FontWeight.Black,
+                color= G900
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = P300)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Current Balance\n$balance",
+//                style = MaterialTheme.typography.h5,
+                color = Color.White
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Recent transactions",
+//            style = MaterialTheme.typography.h6
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(1.dp)
+        ) {
+            items(transactions) { transaction ->
+                TransactionCard(transaction)
+            }
+        }
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewHomeScreen() {
+    val sampleTransactions = listOf(
+        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"),
+        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"),
+        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP")
+    )
+    HomeScreen(transactions = sampleTransactions, balance = "10000 EGP")
+}
