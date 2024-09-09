@@ -60,6 +60,7 @@ import kotlinx.coroutines.launch
 fun FavoriteContactsScreen(navController: NavController) {
     val contacts = remember { mutableStateListOf<Contacts>() }
     var showEditDialog by remember { mutableStateOf(false) }
+    var showAddDialog by remember { mutableStateOf(false) }
     var selectedContactIndex by remember { mutableStateOf(-1) }
     var contactName by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
@@ -191,14 +192,15 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 selectedContactIndex = -1
                                 contactName = ""
                                 accountNumber = ""
-                                showEditDialog = true
+                                showAddDialog = true
                                 coroutineScope.launch { scaffoldState.bottomSheetState.expand()
                                 }
                             }) {
-                            Text("Add New Contact")
+                            Text("Add")
                         }
 
-                        if (showEditDialog) {
+                        if (showEditDialog || showAddDialog) {
+
                             ModalBottomSheet(
                                 modifier = Modifier.fillMaxHeight(),
                                 sheetState = sheetState,
@@ -222,11 +224,18 @@ fun FavoriteContactsScreen(navController: NavController) {
                                             contentDescription = null,
                                             modifier = Modifier.size(24.dp),
                                         )
+                                        if (showEditDialog){
                                         Text(
-                                            text = "Edit",
+                                            text = " Edit",
                                             fontSize = 18.sp,
                                             color = P300
-                                        )
+                                        )}
+                                        else {
+                                            Text(
+                                            text = " Add",
+                                            fontSize = 18.sp,
+                                            color = P300
+                                        )}
                                     }
 
                                     Spacer(modifier = Modifier.height(20.dp))
