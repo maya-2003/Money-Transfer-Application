@@ -36,5 +36,11 @@ fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
         composable(route = Route.CARD_SPLASH){ CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP){ OTPScreenBar(navController) }
         composable(route = Route.CARD_ADDED){ CardAddedScreen(navController) }
+        composable(Route.SIGNUP) {
+            SignupScreen(navController)
+        }
+        composable(Route.CONTINUE_SIGNUP) {
+            CompleteProfileScreen(navController)
+        }
     }
 }
