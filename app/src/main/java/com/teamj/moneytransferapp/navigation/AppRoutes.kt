@@ -27,6 +27,8 @@ object  Route{
     const val CARD_OTP = "card_otp"
     const val CARD_ADDED = "card_added"
 
+    const val TRANSFER_PH1 = "transfer_ph1"
+
 }
 @Composable
 fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
@@ -42,5 +44,6 @@ fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
         composable(Route.CONTINUE_SIGNUP) {
             CompleteProfileScreen(navController)
         }
+        composable(route = Route.TRANSFER_PH1){ TransferScreen(navController) }
     }
 }
