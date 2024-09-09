@@ -1,4 +1,4 @@
-package com.teamj.moneytransferapp.ui.screens
+package com.teamj.moneytransferapp.cards
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

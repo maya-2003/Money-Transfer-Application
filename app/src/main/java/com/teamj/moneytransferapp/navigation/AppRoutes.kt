@@ -6,12 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.transfer.TransferScreen
-import com.teamj.moneytransferapp.ui.screens.AddCardScreen
-import com.teamj.moneytransferapp.ui.screens.CardAddedScreen
-import com.teamj.moneytransferapp.ui.screens.CardSplashScreen
-import com.teamj.moneytransferapp.ui.screens.CompleteProfileScreen
-import com.teamj.moneytransferapp.ui.screens.OTPScreenBar
-import com.teamj.moneytransferapp.ui.screens.SignupScreen
+import com.teamj.moneytransferapp.cards.AddCardScreen
+import com.teamj.moneytransferapp.cards.CardAddedScreen
+import com.teamj.moneytransferapp.cards.CardSplashScreen
+import com.teamj.moneytransferapp.signup.CompleteProfileScreen
+import com.teamj.moneytransferapp.cards.OTPScreenBar
+import com.teamj.moneytransferapp.signup.SignupScreen
 
 object  Route{
     const val SIGNUP = "signup"
