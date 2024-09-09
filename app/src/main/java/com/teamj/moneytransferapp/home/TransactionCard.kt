@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.ui.theme.G100
+import com.teamj.moneytransferapp.ui.theme.G700
+import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
+import com.teamj.moneytransferapp.ui.theme.P50
 
 @Composable
 fun TransactionCard(transaction: Transaction) {
@@ -37,55 +43,72 @@ fun TransactionCard(transaction: Transaction) {
         ) {
         Row(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
                 .background(color = Color.White),
 
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.master_card_logo),
-                contentDescription = "Card Icon",
-                modifier = Modifier.size(60.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .background(color = P50, shape = RoundedCornerShape(8.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.mastercard),
+                    contentDescription = "mastercard logo",
+                    modifier = Modifier.size(32.dp)
+                )
+
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(15.dp)
-            ) {
-                Text(
-                    text = transaction.name,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_medium)),
-                        fontWeight = FontWeight(500))
-                )
-
-                Text(
-                    text = "${transaction.cardType} • ${transaction.cardNumber}",
-//                    style = MaterialTheme.typography.body2,
-                    color = Color.Gray
-                )
-                Text(
-                    text = transaction.time,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                )            }
-
-            Text(
-                text = transaction.amount,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                    fontWeight = FontWeight(500),
-                    color = P300,
-
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = transaction.name,
+                        modifier = Modifier.padding(bottom = 4.dp),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.inter_medium)),
+                            color = G900
+                        )
                     )
-            )
+
+                    Text(
+                        text = "${transaction.cardType} • ${transaction.cardNumber}",
+                        modifier = Modifier.padding(bottom = 4.dp),
+                        color = G700,
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_variable))
+                    )
+
+
+                    Text(
+                        text = transaction.time,
+                        color = G100,
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_variable))
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = transaction.amount,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_medium)),
+                        color = P300,
+
+                        )
+                )
+            }
         }
     }
 }
