@@ -26,4 +26,39 @@
     <string name="country_value">Egypt</string>
     <string name="bank_account_label">Bank Account</string>
     <string name="bank_account_value">1234xxxx</string>
+    <string name="country_initial"></string>
+    <string name="egypt">Egypt</string>
+    <string name="emirates">United Arab Emirates</string>
+    <string name="qatar">Qatar</string>
+    <string name="united_states">United States</string>
+    <string name="first_name">Asmaa</string>
+    <string name="last_name">Dosuky</string>
+    <string name="transfer">Transfer From Website</string>
+    <string name="favourites">Favourites</string>
+    <string name="profile">Profile</string>
+    <string name="help">Help</string>
+    <string name="logout">Logout</string>
+    <string name="personal_information">Personal information</string>
+    <string name="personal_information_description">Your information</string>
+    <string name="settings">Setting</string>
+    <string name="settings_description">Change your settings</string>
+    <string name="payment_history">Payment history</string>
+    <string name="payment_history_description">View your transactions</string>
+    <string name="favourite_list">My Favourite list</string>
+    <string name="favourite_list_description">View your favourites</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="full_name_value">Asmaa Dosuky</string>
+
+    <string name="email_label">Email</string>
+    <string name="email_value">Asmaa@gmail.com</string>
+    <string name="date_of_birth_label">Date Of Birth</string>
+    <string name="date_of_birth_value">12/01/2000</string>
+    <string name="country_label">Country</string>
+    <string name="country_value">Egypt</string>
+    <string name="bank_account_label">Bank Account</string>
+    <string name="bank_account_value">1234xxxx</string>
+
+    <string name="change_password">Change password</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_info">Change your information</string>
 </resources>

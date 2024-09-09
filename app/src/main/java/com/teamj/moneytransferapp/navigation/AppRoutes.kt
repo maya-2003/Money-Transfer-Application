@@ -13,7 +13,7 @@ import com.teamj.moneytransferapp.ui.screens.CompleteProfileScreen
 import com.teamj.moneytransferapp.ui.screens.OTPScreenBar
 import com.teamj.moneytransferapp.ui.screens.SignupScreen
 
-object Route {
+object  Route{
     const val SIGNUP = "signup"
     const val CONTINUE_SIGNUP = "continue_signup"
     const val PROFILE = "profile"
@@ -31,12 +31,15 @@ object Route {
     const val CARD_ADDED = "card_added"
     const val TRANSFER_PH1 = "transfer_ph1"
 
-}
+    const val SETTINGS = "settings"
+    const val CHANGE_PASSWORD = "change_password"
+    const val EDIT_PROFILE = "edit_profile"
 
+}
 @Composable
-fun AppNavHost(onSendNotification: () -> Unit, modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Route.ADD_CARD) {
+fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
+    val navController= rememberNavController()
+    NavHost(navController = navController, startDestination = Route.SIGNUP) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
