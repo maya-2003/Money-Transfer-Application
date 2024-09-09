@@ -206,6 +206,7 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 sheetState = sheetState,
                                 onDismissRequest = {
                                     showEditDialog = false
+                                    showAddDialog = false
                                 }
                             ) {
                                 Column(
