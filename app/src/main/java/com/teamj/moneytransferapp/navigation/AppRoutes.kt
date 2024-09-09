@@ -18,6 +18,10 @@ object  Route{
     const val NOTIFICATIONS = "notifications"
     const val LAST_TRANSACTIONS = "last_transactions"
     const val TRANSACTION = "transaction"
+    const val SETTINGS = "settings"
+    const val CHANGE_PASSWORD = "change_password"
+    const val EDIT_PROFILE = "edit_profile"
+
 }
 @Composable
 fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
