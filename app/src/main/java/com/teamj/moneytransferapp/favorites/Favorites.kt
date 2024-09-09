@@ -179,13 +179,21 @@ fun FavoriteContactsScreen(navController: NavController) {
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Button(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 24.dp, bottom = 4.dp)
+                                .height(54.dp),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = P300
+                            ),
                             onClick = {
                                 selectedContactIndex = -1
                                 contactName = ""
                                 accountNumber = ""
                                 showEditDialog = true
-                                coroutineScope.launch { scaffoldState.bottomSheetState.expand() }
+                                coroutineScope.launch { scaffoldState.bottomSheetState.expand()
+                                }
                             }) {
                             Text("Add New Contact")
                         }
