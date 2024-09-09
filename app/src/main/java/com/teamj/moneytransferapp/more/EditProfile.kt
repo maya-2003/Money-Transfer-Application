@@ -257,7 +257,7 @@ fun CountriesBottomSheet(countries: List<Country>, modifier: Modifier = Modifier
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column {
-            
+
             OutlinedTextField(
                 value = stringResource(countryName),
                 onValueChange = { },
