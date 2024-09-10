@@ -79,14 +79,14 @@ fun TransactionsScreen(navController: NavController, modifier: Modifier = Modifi
                 )
                 .padding(innerPadding)
         ) {
-           TransactionsList()
+           TransactionsList(navController)
         }
     }
 
 }
 
 @Composable
-fun TransactionsList(modifier: Modifier = Modifier) {
+fun TransactionsList(navController: NavController,modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Column(
         modifier = modifier
@@ -98,14 +98,14 @@ fun TransactionsList(modifier: Modifier = Modifier) {
             fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
             color = G900)
         Spacer(modifier = modifier.height(20.dp))
-        TransactionItem()
+        TransactionItem(navController)
         Spacer(modifier = modifier.height(12.dp))
     }
 
 }
 
 @Composable
-fun TransactionItem(modifier: Modifier = Modifier) {
+fun TransactionItem(navController: NavController,modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -120,7 +120,7 @@ fun TransactionItem(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.Center,
             modifier = modifier
                 .fillMaxHeight()
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Row(verticalAlignment = Alignment.Top,) {
                 Box(
@@ -170,10 +170,15 @@ fun TransactionItem(modifier: Modifier = Modifier) {
                     )
 
                 }
-                Spacer(modifier = Modifier.weight(0.8f))
-                Icon(painter = painterResource(id = R.drawable.ic_right_arrow), contentDescription = "arrow icon",
-                    modifier=modifier.size(20.dp),
-                    tint = G200)
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { navController.navigate(Route.TRANSACTION) },
+                    modifier = modifier.size(20.dp)) {
+                    Icon(painter = painterResource(id = R.drawable.ic_right_arrow), contentDescription = "arrow icon",
+                        modifier=modifier.size(20.dp),
+                        tint = G200)
+                    
+                }
+
             }
         }
         Spacer(modifier = modifier.height(8.dp))

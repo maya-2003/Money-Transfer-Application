@@ -51,6 +51,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.NavBottomBar
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G100
@@ -69,132 +71,10 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 fun SuccessfulTransactionScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(Route.SIGNUP)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = "Back arrow icon"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Successful Transactions",
-                        color = G900,
-                        fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_medium))
-                    )
-                },
-
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-            )
+            TopBar(title = "Successful Transactions", route = Route.LAST_TRANSACTIONS, navController = navController)
         },
         bottomBar = {
-            BottomAppBar(
-                actions = {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_home),
-                                    contentDescription = "home icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "home",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_transfer),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "Transfer",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(110.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_history),
-                                    contentDescription = "Settings icon",
-                                    tint = P300
-                                )
-                                Text(
-                                    text = "Transactions",
-                                    color = P300
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(80.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_cards),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "My Cards",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_more),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "More",
-                                    color = G200
-                                )
-                            }
-                        }
-                    }
-                },
-                containerColor = Color.White,
-                modifier = modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-
-            )
+            NavBottomBar(state = 3, navController = navController)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
@@ -429,7 +309,7 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(165.dp),
+            .height(180.dp),
         colors = CardDefaults.cardColors(
             containerColor = P50
         )
@@ -438,7 +318,7 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
 
             Spacer(modifier = modifier.height(16.dp))
