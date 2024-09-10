@@ -108,11 +108,12 @@ fun TransferScreen(navController: NavController) {
         },
 
         content = { innerPadding ->
+
             var showEditDialog by remember { mutableStateOf(false) }
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
             val contacts = remember { mutableStateListOf<Contacts>() }
-
-
+            var from by remember { mutableStateOf("") }
+            var showDialog by remember { mutableStateOf(false) }
             var money by remember { mutableStateOf("") }
             var rec_name by remember { mutableStateOf("") }
             var rec_account by remember { mutableStateOf("") }
@@ -195,19 +196,19 @@ fun TransferScreen(navController: NavController) {
 
                             OutlinedTextField(
                                 value = money,
-                                onValueChange = {money = it},
+                                onValueChange = { money = it },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 placeholder = {
                                     Text(
                                         text = " Enter Amount",
-                                            fontSize = 14.sp,
-                                            lineHeight = 21.sp,
-                                            fontFamily = FontFamily(Font(R.font.inter_variable)),
-                                            fontWeight = FontWeight(400),
-                                            color = Color(0xFFB0AFAE),
+                                        fontSize = 14.sp,
+                                        lineHeight = 21.sp,
+                                        fontFamily = FontFamily(Font(R.font.inter_variable)),
+                                        fontWeight = FontWeight(400),
+                                        color = Color(0xFFB0AFAE),
 
 
-                                    )
+                                        )
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -266,9 +267,7 @@ fun TransferScreen(navController: NavController) {
                                 text = "Favourite",
                                 color = P300,
                                 modifier = Modifier
-                                    .clickable {
-                                        showEditDialog = true
-                                    }
+                                    .clickable { showEditDialog = true }
                                     .width(63.dp)
                                     .height(21.dp)
                                     .padding(top = 3.dp),
@@ -287,7 +286,7 @@ fun TransferScreen(navController: NavController) {
                                 painter = painterResource(id = R.drawable.fav_arrow),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .clickable { /* Handle click event */ }
+                                    .clickable { showEditDialog = true }
                                     .width(20.dp)
                                     .height(20.dp)
                                     .padding(start = 4.dp)
@@ -296,7 +295,7 @@ fun TransferScreen(navController: NavController) {
 
                         OutlinedTextField(
                             value = rec_name,
-                            onValueChange = {rec_name = it},
+                            onValueChange = { rec_name = it },
                             placeholder = {
                                 Text(
                                     text = "Enter Recipient Name",
@@ -306,8 +305,7 @@ fun TransferScreen(navController: NavController) {
                                         fontFamily = FontFamily(Font(R.font.inter_variable)),
                                         fontWeight = FontWeight(400),
                                         color = Color(0xFFB0AFAE),
-
-                                        )
+                                    )
                                 )
                             },
                             modifier = Modifier
@@ -344,7 +342,7 @@ fun TransferScreen(navController: NavController) {
                         OutlinedTextField(
                             value = rec_account,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            onValueChange = {rec_account = it},
+                            onValueChange = { rec_account = it },
                             placeholder = {
                                 Text(
                                     text = "Enter Percipient Account Number",
@@ -375,7 +373,7 @@ fun TransferScreen(navController: NavController) {
                     Spacer(modifier = Modifier.height(22.dp))
 
                     Button(
-                        onClick = {showEditDialog = true },
+                        onClick = { showEditDialog = true },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp),
@@ -388,19 +386,7 @@ fun TransferScreen(navController: NavController) {
                     }
 
                     if (showEditDialog) {
-                        ModalBottomSheet(
-                            modifier = Modifier.fillMaxHeight(),
-                            sheetState = sheetState,
-                            onDismissRequest = {
-                                showEditDialog = false
-                            }
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .background(color = Color.Transparent),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
+
 
                                 ModalBottomSheet(
                                     modifier = Modifier.fillMaxHeight(),
@@ -415,56 +401,71 @@ fun TransferScreen(navController: NavController) {
                                                 .fillMaxWidth()
                                                 .padding(vertical = 8.dp)
                                                 .background(color = P50),
-                                            shape = RoundedCornerShape(8.dp)
+                                            shape = RoundedCornerShape(8.dp),
                                         ) {
 
-                                            Row(
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .background(Color.Transparent)
-                                                    .padding(16.dp),
-
-                                                ) {
-
-                                                Column(
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .background(Color.Transparent)
-                                                ) {
-                                                    Image(
-                                                        painter = painterResource(id = R.drawable.card_logo),
-                                                        contentDescription = null,
-                                                        modifier = Modifier
-                                                            .size(55.dp)
-                                                    )
+                                            FavoriteScreenItem(
+                                                name = contact.name,
+                                                account = contact.accountNumber,
+                                                onFavoriteClick = {
+                                                    rec_name = contact.name
+                                                    rec_account = contact.accountNumber
+                                                    showDialog = false
                                                 }
+                                            )
+
+//                                                Row(
+//                                                    horizontalArrangement = Arrangement.SpaceBetween,
+//                                                    modifier = Modifier
+//                                                        .fillMaxWidth()
+//                                                        .background(Color.Transparent)
+//                                                        .padding(16.dp),
+//
+//                                                    ) {
+//
+//                                                    Column(
+//                                                        modifier = Modifier
+//                                                            .padding(5.dp)
+//                                                            .background(Color.Transparent)
+//                                                    ) {
+//                                                        Image(
+//                                                            painter = painterResource(id = R.drawable.card_logo),
+//                                                            contentDescription = null,
+//                                                            modifier = Modifier
+//                                                                .size(55.dp)
+//                                                        )
+//                                                    }
+//
+//
+//                                                    Spacer(modifier = Modifier.width(8.dp))
+//
+//                                                    Column {
+//                                                        Text(
+//                                                            text = contact.name,
+//                                                            fontSize = 16.sp,
+//                                                            color = Color.Black,
+//                                                        )
+//
+//                                                        Spacer(modifier = Modifier.height(8.dp))
+//
+//                                                        Text(
+//                                                            text = "Account xxxx${
+//                                                                contact.accountNumber.takeLast(
+//                                                                    4
+//                                                                )
+//                                                            }",
+//                                                            fontSize = 16.sp,
+//                                                            color = G100
+//                                                        )
+//                                                    }
+//                                                }
 
 
-                                                Spacer(modifier = Modifier.width(8.dp))
 
-                                                Column {
-                                                    Text(
-                                                        text = contact.name,
-                                                        fontSize = 16.sp,
-                                                        color = Color.Black,
-                                                    )
-
-                                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                                    Text(
-                                                        text = "Account xxxx${contact.accountNumber.takeLast(4)}",
-                                                        fontSize = 16.sp,
-                                                        color = G100
-                                                    )
-                                                }
-                                            }
-
-                                        }
-                                    }
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -474,7 +475,67 @@ fun TransferScreen(navController: NavController) {
 }
 
 
+@Composable
+fun FavoriteScreenItem(name: String, account: String, onFavoriteClick: () -> Unit) {
+    val contacts = remember { mutableStateListOf<Contacts>() }
 
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onFavoriteClick() }
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .background(
+                Color(0xFFF3E9EB), shape = RoundedCornerShape(16.dp)
+            )
+
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent)
+                .padding(16.dp),
+
+            ) {
+
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .background(Color.Transparent)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.card_logo),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(55.dp)
+                )
+            }
+
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            contacts.forEachIndexed { index, contact ->
+
+                Column {
+                    Text(
+                        text = contact.name,
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Account xxxx${contact.accountNumber.takeLast(4)}",
+                        fontSize = 16.sp,
+                        color = G100
+                    )
+                }
+            }
+        }
+    }
+}
 
 
 @Composable
@@ -496,7 +557,8 @@ fun TransferConfirmProgress(modifier: Modifier = Modifier) {
             Box(
                 modifier = modifier
                     .size(40.dp)
-                    .border(width = 2.dp, color = P300,
+                    .border(
+                        width = 2.dp, color = P300,
                         shape = RoundedCornerShape(20.dp)
                     )
                     .background(color = G0, shape = RoundedCornerShape(20.dp)),
