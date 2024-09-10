@@ -26,7 +26,7 @@ import com.teamj.moneytransferapp.ui.theme.G200
 import com.teamj.moneytransferapp.ui.theme.P300
 
 @Composable
-fun navBottomBar(state:Int,navController: NavController, modifier: Modifier=Modifier){
+fun NavBottomBar(state:Int, navController: NavController, modifier: Modifier=Modifier){
     BottomAppBar(
         actions = {
             Row(
@@ -37,7 +37,7 @@ fun navBottomBar(state:Int,navController: NavController, modifier: Modifier=Modi
             ) {
                 IconButton(
                     onClick = {
-                    //navController.navigate()
+                    navController.navigate(Route.HOME)
                          },
                     modifier = modifier
                         .weight(1f)
