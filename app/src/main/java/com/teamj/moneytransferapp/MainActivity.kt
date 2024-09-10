@@ -17,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.teamj.moneytransferapp.api.UserAPIService
 import com.teamj.moneytransferapp.navigation.AppNavHost
 import com.teamj.moneytransferapp.ui.theme.MoneyTransferAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        UserAPIService.initialize(this)
         enableEdgeToEdge()
         setContent {
             MoneyTransferAppTheme {
@@ -33,6 +35,13 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
         }
+    }
+
+    fun storePrefs(token: String, userId: Int) {
+        val editor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
+        editor.putString("auth_token", token)
+        editor.putInt("user_id", userId)
+        editor.apply()
     }
 
     private fun createNotificationChannel() {
