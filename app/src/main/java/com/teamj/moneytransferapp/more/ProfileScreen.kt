@@ -44,7 +44,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.NavBottomBar
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.data.DataSource
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G200
 import com.teamj.moneytransferapp.ui.theme.G40
@@ -59,104 +62,10 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
             Scaffold(
                 topBar = {
-                    CenterAlignedTopAppBar(
-                        navigationIcon = {
-                            IconButton(onClick = {
-                            }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_back_arrow),
-                                    contentDescription = "Back arrow icon"
-                                )
-                            }
-                        },
-                        title = {
-                            Text(
-                                "Profile",
-                            )
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor =  Color.Transparent,
-                            titleContentColor = Color.DarkGray
-                        ),
-                    )
+                    TopBar(title = "Profile", route = Route.MORE, navController = navController)
                 },
-                bottomBar = {BottomAppBar (
-                    actions = {
-                        Row( modifier = modifier
-                            .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround,
-                            verticalAlignment = Alignment.CenterVertically) {
-                            IconButton(onClick = { /*TODO*/ },
-                                modifier = modifier
-                                    .size(70.dp)) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_home),
-                                        contentDescription = "home icon",
-                                        tint = G200
-                                    )
-                                    Text(text = "home",
-                                        color = G200)
-                                }
-                            }
-                            IconButton(onClick = { /*TODO*/ },
-                                modifier = modifier
-                                    .size(70.dp)) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally){
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_transfer),
-                                        contentDescription = "Settings icon",
-                                        tint = G200
-                                    )
-                                    Text(text = "Transfer",
-                                        color = G200)
-                                }
-                            }
-                            IconButton(onClick = { /*TODO*/ },
-                                modifier = modifier
-                                    .size(110.dp)) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally){
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_history),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(text = "Transactions",
-                                    color = G200)
-                                }
-                            }
-                            IconButton(onClick = { /*TODO*/ },
-                                modifier = modifier
-                                    .size(80.dp)) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_cards),
-                                        contentDescription = "Settings icon",
-                                        tint = G200
-                                    )
-                                    Text(text = "My Cards",
-                                        color = G200)
-                                }
-                            }
-                            IconButton(onClick = { /*TODO*/ },
-                                modifier = modifier
-                                    .size(70.dp)) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_more),
-                                        contentDescription = "Settings icon",
-                                        tint = P300
-                                    )
-                                    Text(text = "More",
-                                        color = P300)
-                                }
-                            }
-                        }
-                    },
-                    containerColor = Color.White,
-                    modifier = modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-
-                )
+                bottomBar = {
+                    NavBottomBar(state = 5, navController = navController)
                 },
                 containerColor = Color.Transparent
             ) { innerPadding ->

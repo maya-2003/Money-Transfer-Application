@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.data.DataSource
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G100
@@ -53,27 +54,7 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 fun ProfileInformationScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {navController.navigate(Route.PROFILE)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = "Back arrow icon"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Profile information",
-                        color = G900
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor =  Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-            )
+            TopBar(title = "Profile information", route = Route.PROFILE, navController = navController)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->

@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.data.DataSource
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G100
@@ -62,31 +63,7 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(Route.SIGNUP)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = "Back arrow icon"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Settings",
-                        color = G900,
-                        fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_medium))
-                    )
-                },
-
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-            )
+            TopBar(title = "Settings", route = Route.PROFILE, navController =navController )
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
