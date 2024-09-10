@@ -61,7 +61,7 @@ object  Route{
 @Composable
 fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
     val navController= rememberNavController()
-    NavHost(navController = navController, startDestination = Route.SIGNUP) {
+    NavHost(navController = navController, startDestination = Route.SPLASH) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
@@ -84,8 +84,8 @@ fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
         composable(route = Route.ERROR){ ErrorScreen() }
         //composable(route = Route.HOME){ HomeScreen() }
         composable(route = Route.NO_WIFI){ InternetErrorScreen() }
-        composable(route = Route.ONBOARDING){ Onboarding() }
-        composable(route = Route.SPLASH){ SplashScreen() }
+        composable(route = Route.ONBOARDING){ Onboarding(navController) }
+        composable(route = Route.SPLASH){ SplashScreen(navController) }
 
     }
 }
