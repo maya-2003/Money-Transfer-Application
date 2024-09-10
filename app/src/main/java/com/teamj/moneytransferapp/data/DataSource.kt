@@ -1,5 +1,6 @@
 package com.teamj.moneytransferapp.data
 
+import com.maya.moneytransferapp.Transaction
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.more.Country
 import com.teamj.moneytransferapp.more.MoreItem
@@ -87,5 +88,13 @@ class DataSource {
         settings.add(SettingsItem(R.string.change_password, R.string.change_password, R.drawable.ic_lock, Route.CHANGE_PASSWORD))
         settings.add(SettingsItem(R.string.edit_profile, R.string.change_info, R.drawable.ic_edit, Route.EDIT_PROFILE))
         return settings
+    }
+
+    fun getTransactions(): List<Transaction> {
+        val transactions = mutableListOf<Transaction>()
+        transactions.add(Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"))
+        transactions.add(Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"))
+        transactions.add(Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"))
+        return transactions
     }
 }

@@ -17,10 +17,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,9 +44,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.maya.moneytransferapp.Transaction
 import com.maya.moneytransferapp.TransactionCard
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.navBottomBar
+import com.teamj.moneytransferapp.data.DataSource
+import com.teamj.moneytransferapp.more.HelpBottomSheet
+import com.teamj.moneytransferapp.more.MoreOptions
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G200
@@ -47,13 +63,42 @@ import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(transactions: List<Transaction>, balance: String, modifier: Modifier = Modifier) {
+fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
+    Scaffold(
+        bottomBar = {
+            navBottomBar(state = 1, navController = navController)
+        },
+        containerColor = Color.Transparent
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(YellowGrad, RedGrad)
+                    )
+                )
+                .padding(innerPadding)
+        ) {
+            HomeItems(transactions = DataSource().getTransactions(), balance = "1000")
+
+
+
+        }
+    }
+
+}
+@Composable
+fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(brush = Brush.verticalGradient(colors = listOf(YellowGrad, RedGrad)))
     ) {
+        Spacer(modifier = modifier.height(16.dp))
 
         Column(modifier = modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically,
@@ -175,10 +220,5 @@ fun HomeScreen(transactions: List<Transaction>, balance: String, modifier: Modif
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    val sampleTransactions = listOf(
-        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"),
-        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP"),
-        Transaction("Ahmed Mohamed", "Visa", "1234", "Today 11:00", "500 EGP")
-    )
-    HomeScreen(transactions = sampleTransactions, balance = "10000 EGP")
+    HomeScreen(rememberNavController())
 }
