@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -37,14 +38,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.data.UserPrefs
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.P900
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Onboarding() {
+fun Onboarding(navController: NavController) {
+    val context = LocalContext.current
 
     val pagerState = rememberPagerState(pageCount = { 3 })
 
@@ -65,7 +71,10 @@ fun Onboarding() {
     }
     Box(modifier = Modifier.fillMaxSize()) {
         TextButton(
-            onClick = { },
+            onClick = {
+                navController.navigate(Route.MORE)
+                UserPrefs.setUserOnboarding(context)
+            },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
@@ -126,7 +135,9 @@ fun Onboarding() {
                     if (pagerState.currentPage < pagerState.pageCount - 1) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     } else {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 0)
+                        //pagerState.animateScrollToPage(pagerState.currentPage + 0)
+                        navController.navigate(Route.MORE)
+                        UserPrefs.setUserOnboarding(context)
                     }
                 }
             },
@@ -218,5 +229,5 @@ fun OnboardingScreen(imageRes: Int, title: String, description: String, page: In
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun PreviewTryBoarding() {
-    Onboarding()
+    Onboarding(rememberNavController())
 }
