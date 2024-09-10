@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -57,548 +59,440 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.NavBottomBar
+import com.teamj.moneytransferapp.common.TopBar
+import com.teamj.moneytransferapp.common.TransferProgress
 import com.teamj.moneytransferapp.model.Contacts
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G100
+import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P50
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
 
+@Composable
+fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modifier) {
+    Scaffold(
+        topBar = {
+            TopBar("Transfer", Route.HOME, navController)
+        },
+        bottomBar = {
+            NavBottomBar(state = 2, navController = navController)
+        },
+        containerColor = Color.Transparent
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(YellowGrad, RedGrad)
+                    )
+                )
+                .padding(innerPadding)
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = modifier.height(20.dp))
+                TransferProgress(1)
+                Spacer(modifier = modifier.height(20.dp))
+                TransferAmountInfo(navController)
+            }
+
+        }
+    }
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferScreen(navController: NavController) {
-
+fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier) {
     var showEditDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val contacts = remember { mutableStateListOf<Contacts>() }
 
 
-    Scaffold(
+    var money by remember { mutableStateOf("") }
+    var rec_name by remember { mutableStateOf("") }
+    var rec_account by remember { mutableStateOf("") }
 
-        topBar = {
-
-            TopAppBar(
-                modifier = Modifier
-                    .padding(top = 8.dp),
-
-                title = {
-                    Text(
-                        text = "Transfer",
-                        modifier = Modifier
-                            .padding(start = 100.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        YellowGrad,
+                        RedGrad
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-
-                navigationIcon = {
-                    IconButton(
-                        onClick = { /* NavBack */ }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
+                )
             )
-        },
+    ) {
 
-        content = { innerPadding ->
-            var showEditDialog by remember { mutableStateOf(false) }
-            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-            val contacts = remember { mutableStateListOf<Contacts>() }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp)
 
+        ) {
 
-            var money by remember { mutableStateOf("") }
-            var rec_name by remember { mutableStateOf("") }
-            var rec_account by remember { mutableStateOf("") }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "How much are you sending?",
+                modifier = Modifier
+                    .padding(bottom = 24.dp),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 30.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_bold)),
+                    fontWeight = FontWeight(600),
+                    color = Color(0xFF24221E),
+                    textAlign = TextAlign.Center,
+                )
+            )
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                YellowGrad,
-                                RedGrad
+                        color = Color.White,
+                        shape = RoundedCornerShape(size = 10.dp)
+                    )
+                    .padding(start = 8.dp, top = 16.dp, end = 8.dp, bottom = 16.dp)
+                    .fillMaxWidth()
+                    .height(133.dp),
+
+
+                )
+
+            {
+                Column(
+//                    verticalArrangement = Arrangement.spacedBy(30.dp, Alignment.Top),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = modifier
+                        .padding(start = 12.dp, end = 12.dp)
+                        .height(110.dp)
+
+                    ) {
+                    Text(
+                        text = "Amount",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 24.sp,
+                            fontFamily = FontFamily(Font(R.font.inter_medium)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF3C3A37),
+
                             )
+                    )
+
+                    OutlinedTextField(
+                        value = money,
+                        onValueChange = { money = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        placeholder = {
+                            Text(
+                                text = " Enter Amount",
+                                fontSize = 14.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(R.font.inter_variable)),
+                                fontWeight = FontWeight(400),
+                                color = Color(0xFFB0AFAE),
+
+
+                                )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.White)
+                            .border(
+                                width = 1.5.dp,
+                                color = Color(0xFFB0AFAE),
+                                shape = RoundedCornerShape(size = 6.dp)
+                            ),
+                        textStyle = TextStyle(
+                            fontSize = 20.sp,
+                            color = G900,
+                            fontFamily = FontFamily(Font(R.font.inter_semi_bold))
                         )
                     )
-                    .padding(innerPadding)
+                }
+
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .padding(top = 24.dp, bottom = 32.dp)
             ) {
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 16.dp, end = 16.dp)
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        TransferAmountProgress()
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
                     Text(
-                        text = "How much are you sending?",
-                        modifier = Modifier
-                            .padding(bottom = 24.dp),
+                        text = "Recipient Name",
                         style = TextStyle(
-                            fontSize = 20.sp,
-                            lineHeight = 30.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_bold)),
-                            fontWeight = FontWeight(600),
-                            color = Color(0xFF24221E),
+                            fontSize = 16.sp,
+                            lineHeight = 24.sp,
+                            fontFamily = FontFamily(Font(R.font.inter_medium)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF3C3A37),
+                            textAlign = TextAlign.Start,
+
+                            )
+                    )
+
+                    Spacer(modifier = Modifier.width(132.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.fav_star),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(1.dp, end = 4.dp)
+                            .width(20.dp)
+                            .height(20.dp)
+
+                    )
+                    Text(
+                        text = "Favourite",
+                        color = P300,
+                        modifier = Modifier
+                            .clickable {
+                                showEditDialog = true
+                            }
+                            .width(63.dp)
+                            .height(21.dp)
+                            .padding(top = 3.dp),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 21.sp,
+                            fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
+                            fontWeight = FontWeight(500),
+                            color = Color(0xFF871E35),
+
                             textAlign = TextAlign.Center,
                         )
                     )
+                    IconButton(onClick = {showEditDialog = true}) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.fav_arrow),
+                            contentDescription = null,
+                            tint=P300,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(20.dp)
+                                .padding(start = 4.dp)
+                        )
+                    }
 
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(size = 10.dp)
+
+                }
+
+                OutlinedTextField(
+                    value = rec_name,
+                    onValueChange = { rec_name = it },
+                    placeholder = {
+                        Text(
+                            text = "Enter Recipient Name",
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(R.font.inter_variable)),
+                                fontWeight = FontWeight(400),
+                                color = Color(0xFFB0AFAE),
+
+                                )
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.White)
+                        .border(
+                            width = 1.5.dp,
+                            color = Color(0xFFB0AFAE),
+                            shape = RoundedCornerShape(size = 6.dp)
+                        )
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = "Recipient Account",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 24.sp,
+                            fontFamily = FontFamily(Font(R.font.inter_medium)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF3C3A37),
+                            textAlign = TextAlign.Start,
+
                             )
-                            .padding(start = 8.dp, top = 16.dp, end = 8.dp, bottom = 16.dp)
-                            .width(343.dp)
-                            .height(133.dp),
+                    )
+                }
 
+                OutlinedTextField(
+                    value = rec_account,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { rec_account = it },
+                    placeholder = {
+                        Text(
+                            text = "Enter Percipient Account Number",
 
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(R.font.inter_variable)),
+                                fontWeight = FontWeight(400),
+                                color = Color(0xFFB0AFAE),
+
+                                )
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                        .border(
+                            width = 1.5.dp,
+                            color = Color(0xFFB0AFAE),
+                            shape = RoundedCornerShape(size = 6.dp)
                         )
 
-                    {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-                            horizontalAlignment = Alignment.Start,
 
-                            ) {
-                            Text(
-                                text = "Amount",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 24.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF3C3A37),
+                )
+            }
 
-                                    )
-                            )
+            Spacer(modifier = Modifier.height(8.dp))
 
-                            OutlinedTextField(
-                                value = money,
-                                onValueChange = {money = it},
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                placeholder = {
-                                    Text(
-                                        text = " Enter Amount",
-                                            fontSize = 14.sp,
-                                            lineHeight = 21.sp,
-                                            fontFamily = FontFamily(Font(R.font.inter_variable)),
-                                            fontWeight = FontWeight(400),
-                                            color = Color(0xFFB0AFAE),
-
-
-                                    )
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(color = Color.White)
-                                    .border(
-                                        width = 1.5.dp,
-                                        color = Color(0xFFB0AFAE),
-                                        shape = RoundedCornerShape(size = 6.dp)
-                                    )
-                            )
-                        }
-
+            Button(
+                onClick = {
+                    navController.navigate(Route.TRANSFER_CONFIRM)
+                          },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = P300
+                ),
+            ) {
+                Text(
+                    text = "Confirm",
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                )
+            }
+Spacer(modifier = modifier.height(16.dp))
+            if (showEditDialog) {
+                ModalBottomSheet(
+                    modifier = Modifier.fillMaxHeight(),
+                    sheetState = sheetState,
+                    onDismissRequest = {
+                        showEditDialog = false
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
-
+                ) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-                        horizontalAlignment = Alignment.Start,
                         modifier = Modifier
-                            .padding(top = 24.dp, bottom = 32.dp)
+                            .padding(16.dp)
+                            .background(color = Color.Transparent),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Text(
-                                text = "Recipient Name",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 24.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF3C3A37),
-                                    textAlign = TextAlign.Start,
-
-                                    )
-                            )
-
-                            Spacer(modifier = Modifier.width(132.dp))
-
-                            Image(
-                                painter = painterResource(id = R.drawable.fav_star),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(1.dp, end = 4.dp)
-                                    .width(20.dp)
-                                    .height(20.dp)
-
-                            )
-                            Text(
-                                text = "Favourite",
-                                color = P300,
-                                modifier = Modifier
-                                    .clickable {
-                                        showEditDialog = true
-                                    }
-                                    .width(63.dp)
-                                    .height(21.dp)
-                                    .padding(top = 3.dp),
-                                style = TextStyle(
-                                    fontSize = 14.sp,
-                                    lineHeight = 21.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
-                                    fontWeight = FontWeight(500),
-                                    color = Color(0xFF871E35),
-
-                                    textAlign = TextAlign.Center,
-                                )
-                            )
-
-                            Image(
-                                painter = painterResource(id = R.drawable.fav_arrow),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .clickable { /* Handle click event */ }
-                                    .width(20.dp)
-                                    .height(20.dp)
-                                    .padding(start = 4.dp)
-                            )
-                        }
-
-                        OutlinedTextField(
-                            value = rec_name,
-                            onValueChange = {rec_name = it},
-                            placeholder = {
-                                Text(
-                                    text = "Enter Recipient Name",
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        lineHeight = 21.sp,
-                                        fontFamily = FontFamily(Font(R.font.inter_variable)),
-                                        fontWeight = FontWeight(400),
-                                        color = Color(0xFFB0AFAE),
-
-                                        )
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(color = Color.White)
-                                .border(
-                                    width = 1.5.dp,
-                                    color = Color(0xFFB0AFAE),
-                                    shape = RoundedCornerShape(size = 6.dp)
-                                )
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Text(
-                                text = "Recipient Account",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 24.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF3C3A37),
-                                    textAlign = TextAlign.Start,
-
-                                    )
-                            )
-                        }
-
-                        OutlinedTextField(
-                            value = rec_account,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            onValueChange = {rec_account = it},
-                            placeholder = {
-                                Text(
-                                    text = "Enter Percipient Account Number",
-
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        lineHeight = 21.sp,
-                                        fontFamily = FontFamily(Font(R.font.inter_variable)),
-                                        fontWeight = FontWeight(400),
-                                        color = Color(0xFFB0AFAE),
-
-                                        )
-                                )
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                                .border(
-                                    width = 1.5.dp,
-                                    color = Color(0xFFB0AFAE),
-                                    shape = RoundedCornerShape(size = 6.dp)
-                                )
-
-
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(22.dp))
-
-                    Button(
-                        onClick = {showEditDialog = true },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(54.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = P300
-                        ),
-                    ) {
-                        Text("Continue")
-                    }
-
-                    if (showEditDialog) {
                         ModalBottomSheet(
                             modifier = Modifier.fillMaxHeight(),
                             sheetState = sheetState,
-                            onDismissRequest = {
-                                showEditDialog = false
-                            }
+                            onDismissRequest = { showEditDialog = false }
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .background(color = Color.Transparent),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
 
-                                ModalBottomSheet(
-                                    modifier = Modifier.fillMaxHeight(),
-                                    sheetState = sheetState,
-                                    onDismissRequest = { showEditDialog = false }
+                            contacts.forEachIndexed { index, contact ->
+
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)
+                                        .background(color = P50),
+                                    shape = RoundedCornerShape(8.dp)
                                 ) {
 
-                                    contacts.forEachIndexed { index, contact ->
+                                    Row(
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color.Transparent)
+                                            .padding(16.dp),
 
-                                        Card(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 8.dp)
-                                                .background(color = P50),
-                                            shape = RoundedCornerShape(8.dp)
                                         ) {
 
-                                            Row(
-                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(5.dp)
+                                                .background(Color.Transparent)
+                                        ) {
+                                            Image(
+                                                painter = painterResource(id = R.drawable.card_logo),
+                                                contentDescription = null,
                                                 modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .background(Color.Transparent)
-                                                    .padding(16.dp),
+                                                    .size(55.dp)
+                                            )
+                                        }
 
-                                                ) {
 
-                                                Column(
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .background(Color.Transparent)
-                                                ) {
-                                                    Image(
-                                                        painter = painterResource(id = R.drawable.card_logo),
-                                                        contentDescription = null,
-                                                        modifier = Modifier
-                                                            .size(55.dp)
+                                        Spacer(modifier = Modifier.width(8.dp))
+
+                                        Column {
+                                            Text(
+                                                text = contact.name,
+                                                fontSize = 16.sp,
+                                                color = Color.Black,
+                                            )
+
+                                            Spacer(modifier = Modifier.height(8.dp))
+
+                                            Text(
+                                                text = "Account xxxx${
+                                                    contact.accountNumber.takeLast(
+                                                        4
                                                     )
-                                                }
-
-
-                                                Spacer(modifier = Modifier.width(8.dp))
-
-                                                Column {
-                                                    Text(
-                                                        text = contact.name,
-                                                        fontSize = 16.sp,
-                                                        color = Color.Black,
-                                                    )
-
-                                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                                    Text(
-                                                        text = "Account xxxx${contact.accountNumber.takeLast(4)}",
-                                                        fontSize = 16.sp,
-                                                        color = G100
-                                                    )
-                                                }
-                                            }
-
+                                                }",
+                                                fontSize = 16.sp,
+                                                color = G100
+                                            )
                                         }
                                     }
+
                                 }
                             }
                         }
                     }
                 }
             }
-
-        }
-    )
-}
-
-
-
-
-
-@Composable
-fun TransferAmountProgress(modifier: Modifier = Modifier) {
-
-    val GrayProgress = Color(0xFFA3AAB2)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(
-                        width = 2.dp, color = P300,
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "01",
-                    color = P300,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-            Spacer(modifier = modifier.width(4.dp))
-            HorizontalDivider(thickness = 2.dp, modifier = modifier.width(100.dp), color = P300)
-            Spacer(modifier = modifier.width(4.dp))
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(width = 2.dp, color = GrayProgress, shape = RoundedCornerShape(20.dp))
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "02",
-                    color = GrayProgress,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-            Spacer(modifier = modifier.width(4.dp))
-            HorizontalDivider(
-                thickness = 2.dp,
-                modifier = modifier.width(100.dp),
-                color = GrayProgress
-            )
-            Spacer(modifier = modifier.width(4.dp))
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(width = 2.dp, color = GrayProgress, shape = RoundedCornerShape(20.dp))
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "03",
-                    color = GrayProgress,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-        }
-        Spacer(modifier = modifier.height(20.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-        ) {
-            Text(
-                text = "Amount", style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF24221E),
-                    textAlign = TextAlign.Center,
-
-                    )
-            )
-            Text(
-                text = "Confirmation",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF24221E),
-                    textAlign = TextAlign.Center
-                )
-            )
-            Text(
-                text = "Payment",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF24221E),
-                    textAlign = TextAlign.Center
-
-                )
-            )
-
         }
     }
+
 }
+
 
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewTransferScreen() {
-    TransferScreen(rememberNavController())
+    TransferAmountScreen(rememberNavController())
 }

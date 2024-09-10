@@ -54,6 +54,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.NavBottomBar
+import com.teamj.moneytransferapp.common.TopBar
+import com.teamj.moneytransferapp.common.TransferProgress
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G100
@@ -63,6 +66,7 @@ import com.teamj.moneytransferapp.ui.theme.G700
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.GrayProgress
 import com.teamj.moneytransferapp.ui.theme.P300
+import com.teamj.moneytransferapp.ui.theme.P50
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.S400
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
@@ -73,129 +77,10 @@ import com.teamj.moneytransferapp.ui.theme.cardColor
 fun TransferConfirmationScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(Route.SIGNUP)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = "Back arrow icon"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Transfer",
-                    )
-                },
-
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-            )
+            TopBar("Transfer", Route.HOME,navController)
         },
         bottomBar = {
-            BottomAppBar(
-                actions = {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_home),
-                                    contentDescription = "home icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "home",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_transfer),
-                                    contentDescription = "Settings icon",
-                                    tint = P300
-                                )
-                                Text(
-                                    text = "Transfer",
-                                    color = P300
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(110.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_history),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "Transactions",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(80.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_cards),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "My Cards",
-                                    color = G200
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = modifier
-                                .size(70.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_more),
-                                    contentDescription = "Settings icon",
-                                    tint = G200
-                                )
-                                Text(
-                                    text = "More",
-                                    color = G200
-                                )
-                            }
-                        }
-                    }
-                },
-                containerColor = Color.White,
-                modifier = modifier.clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-
-            )
+            NavBottomBar(state = 2, navController = navController)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
@@ -215,7 +100,7 @@ fun TransferConfirmationScreen(navController: NavController, modifier: Modifier 
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TransferConfirmProgress()
+                TransferProgress(2)
                 Spacer(modifier = modifier.height(28.dp))
                 TransferConfirmation(navController)
             }
@@ -223,84 +108,6 @@ fun TransferConfirmationScreen(navController: NavController, modifier: Modifier 
         }
     }
 
-}
-
-@Composable
-fun TransferConfirmProgress(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(width = 2.dp, color = P300, shape = RoundedCornerShape(20.dp))
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "01",
-                    color = P300,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-            Spacer(modifier = modifier.width(4.dp))
-            HorizontalDivider(thickness = 2.dp, modifier = modifier.width(100.dp), color = P300)
-            Spacer(modifier = modifier.width(4.dp))
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(width = 2.dp, color = P300, shape = RoundedCornerShape(20.dp))
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "02",
-                    color = P300,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-            Spacer(modifier = modifier.width(4.dp))
-            HorizontalDivider(thickness = 2.dp, modifier = modifier.width(100.dp), color = GrayProgress)
-            Spacer(modifier = modifier.width(4.dp))
-            Box(
-                modifier = modifier
-                    .size(40.dp)
-                    .border(width = 2.dp, color = GrayProgress, shape = RoundedCornerShape(20.dp))
-                    .background(color = G0, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "03",
-                    color = GrayProgress,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_bold))
-                )
-            }
-        }
-        Spacer(modifier = modifier.height(20.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-        ) {
-            Text(text = "Amount", fontFamily = FontFamily(Font(R.font.inter_medium)))
-            Text(text = "Confirmation", fontFamily = FontFamily(Font(R.font.inter_medium)))
-            Text(text = "Payment", fontFamily = FontFamily(Font(R.font.inter_medium)))
-
-        }
-    }
 }
 
 
@@ -373,9 +180,9 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                 Card(
                     modifier = modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(140.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = cardColor
+                        containerColor = P50
                     )
                 ) {
                     Spacer(modifier = modifier.height(8.dp))
@@ -388,13 +195,15 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                     ) {
                         Box(
                             modifier = modifier
-                                .size(50.dp)
-                                .background(color = G40, shape = RoundedCornerShape(25.dp)),
+                                .size(60.dp)
+                                .background(color = G40, shape = RoundedCornerShape(30.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_bank),
-                                contentDescription = "Bank icon"
+                                contentDescription = "Bank icon",
+                                modifier=modifier.size(40.dp),
+                                tint = G700
                             )
 
                         }
@@ -426,14 +235,14 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                     Spacer(modifier = modifier.height(8.dp))
 
                 }
-                Spacer(modifier = modifier.height(24.dp))
+                Spacer(modifier = modifier.height(12.dp))
 
                 Card(
                     modifier = modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(140.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = cardColor
+                        containerColor = P50
                     )
                 ) {
                     Spacer(modifier = modifier.height(8.dp))
@@ -442,17 +251,19 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                         horizontalArrangement = Arrangement.Center,
                         modifier = modifier
                             .fillMaxHeight()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = 16.dp)
                     ) {
                         Box(
                             modifier = modifier
-                                .size(50.dp)
-                                .background(color = G40, shape = RoundedCornerShape(25.dp)),
+                                .size(60.dp)
+                                .background(color = G40, shape = RoundedCornerShape(30.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_bank),
-                                contentDescription = "Bank icon"
+                                contentDescription = "Bank icon",
+                                modifier=modifier.size(40.dp),
+                                tint = G700
                             )
 
                         }
@@ -525,7 +336,7 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
         }
         Spacer(modifier = modifier.height(12.dp))
         Button(
-            onClick = { },
+            onClick = { navController.navigate(Route.TRANSFER_PH1)},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(54.dp)
