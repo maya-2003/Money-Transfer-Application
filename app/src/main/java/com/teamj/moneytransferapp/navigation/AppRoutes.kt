@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.maya.moneytransferapp.FavoriteContactsScreen
-import com.teamj.moneytransferapp.transfer.TransferScreen
 import com.teamj.moneytransferapp.cards.AddCardScreen
 import com.teamj.moneytransferapp.cards.CardAddedScreen
 import com.teamj.moneytransferapp.cards.CardSplashScreen
@@ -27,6 +26,7 @@ import com.teamj.moneytransferapp.signup.SignupScreen
 import com.teamj.moneytransferapp.splash.SplashScreen
 import com.teamj.moneytransferapp.transaction.SuccessfulTransactionScreen
 import com.teamj.moneytransferapp.transaction.TransactionsScreen
+import com.teamj.moneytransferapp.transfer.TransferAmountScreen
 import com.teamj.moneytransferapp.transfer.TransferConfirmationScreen
 import com.teamj.moneytransferapp.transfer.TransferPaymentScreen
 
@@ -61,14 +61,14 @@ object  Route{
 @Composable
 fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
     val navController= rememberNavController()
-    NavHost(navController = navController, startDestination = Route.SPLASH) {
+    NavHost(navController = navController, startDestination = Route.LAST_TRANSACTIONS) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
         composable(route = Route.CARD_ADDED) { CardAddedScreen(navController) }
         composable(Route.SIGNUP) { SignupScreen(navController) }
         composable(Route.CONTINUE_SIGNUP) { CompleteProfileScreen(navController) }
-        composable(route = Route.TRANSFER_PH1){ TransferScreen(navController) }
+        composable(route = Route.TRANSFER_PH1){ TransferAmountScreen(navController) }
         composable(route = Route.TRANSFER_CONFIRM){ TransferConfirmationScreen(navController) }
         composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
         composable(route = Route.LOGIN){ SignInScreen() }
@@ -82,7 +82,7 @@ fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
         composable(route = Route.EDIT_PROFILE){ EditProfileScreen(navController) }
         composable(route = Route.CHANGE_PASSWORD){ ChangePasswordScreen(navController) }
         composable(route = Route.ERROR){ ErrorScreen() }
-        //composable(route = Route.HOME){ HomeScreen() }
+        composable(route = Route.HOME){ HomeScreen(navController) }
         composable(route = Route.NO_WIFI){ InternetErrorScreen() }
         composable(route = Route.ONBOARDING){ Onboarding(navController) }
         composable(route = Route.SPLASH){ SplashScreen(navController) }
