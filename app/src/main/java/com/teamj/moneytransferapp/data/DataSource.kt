@@ -1,7 +1,7 @@
 package com.teamj.moneytransferapp.data
 
 import com.teamj.moneytransferapp.R
-import com.teamj.moneytransferapp.model.Country
+import com.teamj.moneytransferapp.more.Country
 import com.teamj.moneytransferapp.more.MoreItem
 import com.teamj.moneytransferapp.more.ProfileInfoItem
 import com.teamj.moneytransferapp.more.ProfileItem
