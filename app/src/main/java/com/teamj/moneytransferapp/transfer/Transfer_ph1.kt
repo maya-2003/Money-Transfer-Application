@@ -143,7 +143,7 @@ fun TransferScreen(navController: NavController) {
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        TransferConfirmProgress()
+                        TransferAmountProgress()
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -478,7 +478,7 @@ fun TransferScreen(navController: NavController) {
 
 
 @Composable
-fun TransferConfirmProgress(modifier: Modifier = Modifier) {
+fun TransferAmountProgress(modifier: Modifier = Modifier) {
 
     val GrayProgress = Color(0xFFA3AAB2)
 
@@ -496,7 +496,8 @@ fun TransferConfirmProgress(modifier: Modifier = Modifier) {
             Box(
                 modifier = modifier
                     .size(40.dp)
-                    .border(width = 2.dp, color = P300,
+                    .border(
+                        width = 2.dp, color = P300,
                         shape = RoundedCornerShape(20.dp)
                     )
                     .background(color = G0, shape = RoundedCornerShape(20.dp)),

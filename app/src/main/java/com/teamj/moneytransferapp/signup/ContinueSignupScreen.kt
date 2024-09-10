@@ -64,7 +64,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.data.DataSource
-import com.teamj.moneytransferapp.model.Country
+import com.teamj.moneytransferapp.more.Country
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.FieldStyle
 import com.teamj.moneytransferapp.ui.theme.G0
