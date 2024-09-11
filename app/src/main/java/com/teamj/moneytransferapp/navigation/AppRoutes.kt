@@ -63,7 +63,7 @@ object  Route{
 }
 @Composable
 fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit, modifier: Modifier = Modifier){
-    NavHost(navController = navController, startDestination = Route.TRANSFER_PH1) {
+    NavHost(navController = navController, startDestination = Route.SPLASH) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
@@ -116,7 +116,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
             TransferPaymentScreen(amount, toName, toNumber,fromName,fromNumber, navController = navController)
         }
         //composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
-        composable(route = Route.LOGIN){ SignInScreen() }
+        composable(route = Route.LOGIN){ SignInScreen(navController) }
         //composable(route = Route.TRANSACTION){ SuccessfulTransactionScreen(navController) }
         composable(
             route = "${Route.TRANSACTION}/{amount}/{recpName}/{recpNumber}/{fromName}/{fromNumber}/{date}/{type}",

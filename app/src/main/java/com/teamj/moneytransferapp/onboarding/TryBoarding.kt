@@ -136,7 +136,7 @@ fun Onboarding(navController: NavController) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     } else {
                         //pagerState.animateScrollToPage(pagerState.currentPage + 0)
-                        navController.navigate(Route.MORE)
+                        navController.navigate(Route.SIGNUP)
                         UserPrefs.setUserOnboarding(context)
                     }
                 }

@@ -36,7 +36,7 @@ fun SplashScreen(navController: NavController, modifier: Modifier = Modifier, vi
     LaunchedEffect(splashShow) {
         if (!splashShow) {
             if (showOnboarding) {
-                navController.navigate(Route.MORE)
+                navController.navigate(Route.LOGIN)
             } else {
                 navController.navigate(Route.ONBOARDING)
             }

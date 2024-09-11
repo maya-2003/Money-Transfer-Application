@@ -47,12 +47,15 @@ import com.teamj.moneytransferapp.ui.theme.G70
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P900
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.MainActivity
 import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
+import com.teamj.moneytransferapp.navigation.Route
 
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
+fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
     val context= LocalContext.current
     val activity = context as? MainActivity
     Box(
@@ -208,6 +211,7 @@ fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = 
                             viewModel.loginUser(context, email.value, password.value) { token, id ->
                                 activity?.storePrefs(token, id)
                             }
+                            navController.navigate(Route.HOME)
                         }
                     }
                 },
@@ -263,5 +267,5 @@ fun validateData(password:String,email:String): Int {
 @Composable
 @Preview(showBackground = true)
 fun SignInfun(){
-    SignInScreen()
+    SignInScreen(rememberNavController())
 }
