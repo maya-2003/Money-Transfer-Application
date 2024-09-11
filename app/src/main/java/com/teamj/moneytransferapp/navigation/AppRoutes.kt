@@ -1,6 +1,14 @@
 package com.teamj.moneytransferapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -14,6 +22,7 @@ import com.teamj.moneytransferapp.cards.CardAddedScreen
 import com.teamj.moneytransferapp.cards.CardSplashScreen
 import com.teamj.moneytransferapp.signup.CompleteProfileScreen
 import com.teamj.moneytransferapp.cards.OTPScreenBar
+import com.teamj.moneytransferapp.corefun.AlertDialog
 import com.teamj.moneytransferapp.error.ErrorScreen
 import com.teamj.moneytransferapp.home.HomeScreen
 import com.teamj.moneytransferapp.more.ChangePasswordScreen
@@ -24,6 +33,7 @@ import com.teamj.moneytransferapp.more.ProfileScreen
 import com.teamj.moneytransferapp.more.SettingsScreen
 import com.teamj.moneytransferapp.nowifi.InternetErrorScreen
 import com.teamj.moneytransferapp.onboarding.Onboarding
+import com.teamj.moneytransferapp.corefun.rememberConnectivityState
 import com.teamj.moneytransferapp.signin.SignInScreen
 import com.teamj.moneytransferapp.signup.SignupScreen
 import com.teamj.moneytransferapp.splash.SplashScreen
@@ -32,6 +42,7 @@ import com.teamj.moneytransferapp.transaction.TransactionsScreen
 import com.teamj.moneytransferapp.transfer.TransferAmountScreen
 import com.teamj.moneytransferapp.transfer.TransferConfirmationScreen
 import com.teamj.moneytransferapp.transfer.TransferPaymentScreen
+import kotlinx.coroutines.delay
 
 object  Route{
     const val SIGNUP = "signup"
@@ -64,6 +75,25 @@ object  Route{
 @Composable
 fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit, modifier: Modifier = Modifier){
     NavHost(navController = navController, startDestination = Route.TRANSFER_PH1) {
+
+    val isConnected = rememberConnectivityState().value
+    var connectionCheck by remember { mutableStateOf(false) }
+
+    AlertDialog(navController = navController)
+
+    LaunchedEffect(isConnected) {
+
+        connectionCheck = true
+        delay(2500)
+        if (isConnected) {
+
+            navController.navigate(Route.LOGIN)
+
+        } else{
+
+            navController.navigate(Route.NO_WIFI)
+        }
+    }
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }

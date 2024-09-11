@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -18,12 +17,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.model.FavDelReq
+import com.teamj.moneytransferapp.model.FavReq
+import com.teamj.moneytransferapp.model.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.P50
 
 @Composable
-fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
+fun ContactCard(favos: FavReq, onEditClick: () -> Unit, onDeleteClick: () -> Unit, theDel: String, viewModel: FavoritesViewModel = viewModel()) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,6 +35,8 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
             .background(color = P50),
         shape = RoundedCornerShape(8.dp)
     ) {
+
+        var accountNumber = theDel
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -58,7 +64,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
 
             Column {
                 Text(
-                    text = contact.name,
+                    text = favos.recipientName,
                     fontSize = 16.sp,
                     color = Color.Black,
                 )
@@ -66,7 +72,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Account xxxx${contact.accountNumber.takeLast(4)}",
+                    text = "Account xxxx${favos.recipientAccountNumber.takeLast(4)}",
                     fontSize = 16.sp,
                     color = G100
                 )
@@ -81,12 +87,14 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
                     )
                 }
 
-                IconButton(onClick = onDeleteClick) {
+                IconButton(
+                    onClick = { viewModel.deleteFavorite(FavDelReq(accountNumber)) })
+                {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete",
                         modifier = Modifier
-                                .size(20.dp)
+                                .size(20.dp),
                     )
                 }
             }

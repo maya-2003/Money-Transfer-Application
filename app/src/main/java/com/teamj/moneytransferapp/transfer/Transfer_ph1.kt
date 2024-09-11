@@ -64,7 +64,6 @@ import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.common.TransferProgress
 import com.teamj.moneytransferapp.model.Contacts
 import com.teamj.moneytransferapp.navigation.Route
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
@@ -116,6 +115,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
     var showEditDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val contacts = remember { mutableStateListOf<Contacts>() }
+    var showDialog by remember { mutableStateOf(false) }
 
 
     var money by remember { mutableStateOf("") }
@@ -402,19 +402,6 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
             }
 Spacer(modifier = modifier.height(16.dp))
             if (showEditDialog) {
-                ModalBottomSheet(
-                    modifier = Modifier.fillMaxHeight(),
-                    sheetState = sheetState,
-                    onDismissRequest = {
-                        showEditDialog = false
-                    }
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .background(color = Color.Transparent),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
 
                         ModalBottomSheet(
                             modifier = Modifier.fillMaxHeight(),
@@ -431,52 +418,15 @@ Spacer(modifier = modifier.height(16.dp))
                                         .background(color = P50),
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
-
-                                    Row(
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .background(Color.Transparent)
-                                            .padding(16.dp),
-
-                                        ) {
-
-                                        Column(
-                                            modifier = Modifier
-                                                .padding(5.dp)
-                                                .background(Color.Transparent)
-                                        ) {
-                                            Image(
-                                                painter = painterResource(id = R.drawable.card_logo),
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .size(55.dp)
-                                            )
+                                    FavoritePicker(
+                                        name = contact.name,
+                                        account = contact.accountNumber,
+                                        onFavoriteClick = {
+                                            rec_name = contact.name
+                                            rec_account = contact.accountNumber
+                                            showDialog = false
                                         }
-
-
-                                        Spacer(modifier = Modifier.width(8.dp))
-
-                                        Column {
-                                            Text(
-                                                text = contact.name,
-                                                fontSize = 16.sp,
-                                                color = Color.Black,
-                                            )
-
-                                            Spacer(modifier = Modifier.height(8.dp))
-
-                                            Text(
-                                                text = "Account xxxx${
-                                                    contact.accountNumber.takeLast(
-                                                        4
-                                                    )
-                                                }",
-                                                fontSize = 16.sp,
-                                                color = G100
-                                            )
-                                        }
-                                    }
+                                    )
 
                                 }
                             }
@@ -485,10 +435,120 @@ Spacer(modifier = modifier.height(16.dp))
                 }
             }
         }
+
+
+
+
+
+@Composable
+
+fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit) {
+
+    val contacts = remember { mutableStateListOf<Contacts>() }
+
+
+    Row(
+
+        verticalAlignment = Alignment.CenterVertically,
+
+        modifier = Modifier
+
+            .fillMaxWidth()
+
+            .clickable { onFavoriteClick() }
+
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+
+            .background(
+
+                Color(0xFFF3E9EB), shape = RoundedCornerShape(16.dp)
+
+            )
+
+
+    ) {
+
+        Row(
+
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+            modifier = Modifier
+
+                .fillMaxWidth()
+
+                .background(Color.Transparent)
+
+                .padding(16.dp),
+
+
+            ) {
+
+
+            Column(
+
+                modifier = Modifier
+
+                    .padding(5.dp)
+
+                    .background(Color.Transparent)
+
+            ) {
+
+                Image(
+
+                    painter = painterResource(id = R.drawable.card_logo),
+
+                    contentDescription = null,
+
+                    modifier = Modifier
+
+                        .size(55.dp)
+
+                )
+
+            }
+
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+
+
+            contacts.forEachIndexed { index, contact ->
+
+
+                Column {
+
+                    Text(
+
+                        text = contact.name,
+
+                        fontSize = 16.sp,
+
+                        color = Color.Black,
+
+                        )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+
+                        text = "Account xxxx${contact.accountNumber.takeLast(4)}",
+
+                        fontSize = 16.sp,
+
+                        color = G100
+
+                    )
+
+                }
+
+            }
+
+        }
+
     }
 
 }
-
 
 
 @Preview(showBackground = true)

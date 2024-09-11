@@ -1,6 +1,7 @@
-package com.maya.moneytransferapp
+package com.teamj.moneytransferapp.model
 
-data class Contacts(
+data class FavReq (
     val recipientName: String,
     val recipientAccountNumber: String
 )
+

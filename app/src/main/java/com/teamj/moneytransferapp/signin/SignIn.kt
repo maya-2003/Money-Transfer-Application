@@ -31,13 +31,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.ui.theme.D300
 import com.teamj.moneytransferapp.ui.theme.FieldStyle
@@ -49,10 +55,11 @@ import com.teamj.moneytransferapp.ui.theme.P900
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.MainActivity
 import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
+import okhttp3.Route
 
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
+fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
     val context= LocalContext.current
     val activity = context as? MainActivity
     Box(
@@ -79,9 +86,16 @@ fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = 
                 ){
                 Text(
                     text = "Sign In",
-                    fontSize = 24.sp,
-                    modifier = modifier
-                        .padding(top = 24.dp)
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        lineHeight = 30.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_bold)),
+                        fontWeight = FontWeight(500),
+                        color = Color(0xFF24221E),
+
+                        textAlign = TextAlign.Center,
+                    )
+
                 )
 
             }
@@ -91,7 +105,14 @@ fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = 
 
             Text(
                 text = "Speedo Transfer",
-                fontSize = 30.sp
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                    fontWeight = FontWeight(600),
+                    color = Color(0xFF24221E),
+
+                    textAlign = TextAlign.Center,
+                )
             )
 
             Spacer(modifier = Modifier.height(36.dp))
@@ -237,7 +258,9 @@ fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = 
                         .padding(top = 15.dp)
                 )
 
-                TextButton(onClick = { /* TODO */ }) {
+                TextButton(onClick = {
+                    navController.navigate(Route.SIGNUP)
+                }) {
                     Text(
                         text = "Sign Up",
                         fontSize = 16.sp,
