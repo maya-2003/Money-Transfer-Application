@@ -256,7 +256,6 @@ fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, vie
 }
 
 
-
 fun validateData(password:String,email:String): Int {
     val state = if(email.isBlank()||password.isBlank()) 0
     else 1
