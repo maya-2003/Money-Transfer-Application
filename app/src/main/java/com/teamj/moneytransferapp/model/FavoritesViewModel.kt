@@ -1,17 +1,17 @@
 package com.teamj.moneytransferapp.model
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teamj.moneytransferapp.api.SessionController
-import com.teamj.moneytransferapp.api.UserAPICallable
 import com.teamj.moneytransferapp.api.UserAPIService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel : ViewModel() {
+
+    private val _favoritesList = MutableStateFlow<List<FavReq>>(emptyList())
+    val favoritesList = _favoritesList.asStateFlow()
 
     fun addFavorite(favReq: FavReq) {
         viewModelScope.launch {
@@ -21,6 +21,24 @@ class FavoritesViewModel : ViewModel() {
                 val response = UserAPIService.callable.addFav(favReq)
 
                 Log.d("Added Fav", "${response.message}")
+
+            } catch (e: Exception) {
+
+                Log.e("addingError", "${e.message}")
+
+            }
+        }
+    }
+
+    fun getFavorite(favGetReq: FavReq) {
+        viewModelScope.launch {
+
+
+            try {
+
+                val response = UserAPIService.callable.getFav()
+                _favoritesList.value = response
+                Log.d("Get Fav", "${response}")
 
             } catch (e: Exception) {
 

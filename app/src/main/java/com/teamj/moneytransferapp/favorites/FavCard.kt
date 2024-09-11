@@ -26,7 +26,7 @@ import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.P50
 
 @Composable
-fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () -> Unit, theDel: String , viewModel: FavoritesViewModel = viewModel()) {
+fun ContactCard(favos: FavReq, onEditClick: () -> Unit, onDeleteClick: () -> Unit, theDel: String, viewModel: FavoritesViewModel = viewModel()) {
 
     Card(
         modifier = Modifier
@@ -64,7 +64,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
 
             Column {
                 Text(
-                    text = contact.recipientName,
+                    text = favos.recipientName,
                     fontSize = 16.sp,
                     color = Color.Black,
                 )
@@ -72,7 +72,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Account xxxx${contact.recipientAccountNumber.takeLast(4)}",
+                    text = "Account xxxx${favos.recipientAccountNumber.takeLast(4)}",
                     fontSize = 16.sp,
                     color = G100
                 )

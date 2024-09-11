@@ -32,6 +32,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +70,7 @@ fun FavoriteContactsScreen(
     navController: NavController,
     viewModel: FavoritesViewModel = viewModel()
 ) {
+    val favList by viewModel.favoritesList.collectAsState()
     val contacts = remember { mutableStateListOf<Contacts>() }
     var showEditDialog by remember { mutableStateOf(false) }
     var selectedContactIndex by remember { mutableStateOf(-1) }
@@ -76,7 +78,6 @@ fun FavoriteContactsScreen(
     var accountNumber by remember { mutableStateOf("") }
     val scaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
     Box(
         modifier = Modifier
@@ -91,7 +92,6 @@ fun FavoriteContactsScreen(
             )
     ) {
 
-
         Scaffold(
 
             topBar = {
@@ -105,8 +105,8 @@ fun FavoriteContactsScreen(
                                 .padding(start = 88.dp),
                             style = TextStyle(
                                 fontSize = 24.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
-                                fontWeight = FontWeight(600),
+                                fontFamily = FontFamily(Font(R.font.inter_medium)),
+                                fontWeight = FontWeight(400),
                                 color = Color(0xFF24221E),
 
                                 textAlign = TextAlign.Center,
@@ -182,15 +182,15 @@ fun FavoriteContactsScreen(
                             )
                         }
 
-                        contacts.forEachIndexed { index, contact ->
+                        favList.forEachIndexed { index, favos ->
 
                             ContactCard(
 
-                                contact = contact,
+                                favos = favos,
                                 onEditClick = {
                                     selectedContactIndex = index
-                                    contactName = contact.recipientName
-                                    accountNumber = contact.recipientAccountNumber
+                                    contactName = favos.recipientName
+                                    accountNumber = favos.recipientAccountNumber
                                     showEditDialog = true
                                     coroutineScope.launch {
                                         scaffoldState.bottomSheetState.expand()
@@ -201,7 +201,7 @@ fun FavoriteContactsScreen(
                                     contacts.removeAt(index)
                                 },
 
-                                theDel = contact.recipientAccountNumber
+                                theDel = favos.recipientAccountNumber
 
                             )
                         }
@@ -333,6 +333,7 @@ fun FavoriteContactsScreen(
         )
     }
 }
+
 
 
 @Preview(showSystemUi = false, showBackground = false)
