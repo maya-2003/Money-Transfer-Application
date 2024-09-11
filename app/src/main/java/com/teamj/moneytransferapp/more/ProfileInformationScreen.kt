@@ -24,11 +24,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -48,6 +52,8 @@ import com.teamj.moneytransferapp.ui.theme.G40
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.viewmodels.UserDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,13 +77,40 @@ fun ProfileInformationScreen(navController: NavController, modifier: Modifier = 
                 )
                 .padding(innerPadding)
         ) {
-            ProfileInfo(DataSource().getProfileInfoItem())
+            ProfileInfo()
         }
     }
 }
 
 @Composable
-fun ProfileInfo(profileInfoItems:List<ProfileInfoItem>, modifier: Modifier = Modifier){
+fun ProfileInfo(modifier: Modifier = Modifier, viewModel: UserDetailsViewModel = viewModel()){
+    val context = LocalContext.current
+    val userDetails by viewModel.userDetails.collectAsState()
+    val profileItems = mutableListOf<ProfileInfoItem>()
+
+    LaunchedEffect(Unit) {
+        viewModel.getUserDetails(context)
+    }
+
+    if (userDetails != null) {
+        val user = userDetails!!
+        profileItems.add(ProfileInfoItem(R.string.full_name_label, user.name))
+        profileItems.add(ProfileInfoItem(R.string.email_label, user.email))
+        profileItems.add(
+            ProfileInfoItem(
+                R.string.date_of_birth_label,
+                user.dateOfBirth
+            )
+        )
+        profileItems.add(ProfileInfoItem(R.string.country_label, user.country))
+        profileItems.add(
+            ProfileInfoItem(
+                R.string.bank_account_label,
+                user.accounts[0].accountNumber
+            )
+        )
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize(),
@@ -85,8 +118,8 @@ fun ProfileInfo(profileInfoItems:List<ProfileInfoItem>, modifier: Modifier = Mod
     ){
         Column(modifier = modifier.padding(top=20.dp)){
             LazyColumn {
-                items(profileInfoItems.size) { position ->
-                    ProfileInfoItem(profileInfoItems[position])
+                items(profileItems.size) { position ->
+                    ProfileInfoItem(profileItems[position])
                     HorizontalDivider(thickness = 1.dp,
                         modifier = modifier.padding(horizontal = 10.dp),
                         color = G40
@@ -116,7 +149,7 @@ fun ProfileInfoItem(profileInfoItem:ProfileInfoItem, modifier: Modifier=Modifier
                     fontFamily = FontFamily(Font(R.font.inter_medium)),
                     fontWeight= FontWeight.SemiBold
                 )
-                Text(text = stringResource(profileInfoItem.info),
+                Text(text =profileInfoItem.info,
                     modifier = modifier.padding(vertical = 8.dp),
                     fontSize = 16.sp,
                     color = G100,

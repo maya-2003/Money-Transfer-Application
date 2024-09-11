@@ -1,4 +1,4 @@
-package com.maya.moneytransferapp
+package com.teamj.moneytransferapp.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.model.Transaction
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G700
 import com.teamj.moneytransferapp.ui.theme.G900
@@ -33,7 +38,14 @@ import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P50
 
 @Composable
-fun TransactionCard(transaction: Transaction) {
+fun TransactionCard(transaction: Transaction, type : String) {
+    var name by rememberSaveable { mutableStateOf("name") }
+    var amount by rememberSaveable { mutableStateOf(0) }
+    var date by rememberSaveable { mutableStateOf("Toaday 11 PM") }
+
+    name =if(type == "Sent") transaction.toAccountName else transaction.fromAccountName
+    amount= transaction.amount
+    date ="${transaction.transactionDate.substring(0,10)} ${transaction.transactionDate.substring(11,16)}"
     Box(
         modifier = Modifier
             .padding(5.dp)
@@ -70,7 +82,7 @@ fun TransactionCard(transaction: Transaction) {
                     modifier = Modifier
                 ) {
                     Text(
-                        text = transaction.name,
+                        text = name,
                         modifier = Modifier.padding(bottom = 4.dp),
                         style = TextStyle(
                             fontSize = 14.sp,
@@ -80,7 +92,7 @@ fun TransactionCard(transaction: Transaction) {
                     )
 
                     Text(
-                        text = "${transaction.cardType} • ${transaction.cardNumber}",
+                        text = "Visa . Mater Card . 1234",
                         modifier = Modifier.padding(bottom = 4.dp),
                         color = G700,
                         fontSize = 12.sp,
@@ -89,7 +101,7 @@ fun TransactionCard(transaction: Transaction) {
 
 
                     Text(
-                        text = transaction.time,
+                        text = date,
                         color = G100,
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.inter_variable))
@@ -99,7 +111,7 @@ fun TransactionCard(transaction: Transaction) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = transaction.amount,
+                    text = "$${amount}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 24.sp,
@@ -111,18 +123,4 @@ fun TransactionCard(transaction: Transaction) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewTransactionCard() {
-    TransactionCard(
-        transaction = Transaction(
-            name = "Ahmed Mohamed",
-            cardType = "Visa",
-            cardNumber = "1234",
-            time = "Today 11:00",
-            amount = "500 EGP"
-        )
-    )
 }

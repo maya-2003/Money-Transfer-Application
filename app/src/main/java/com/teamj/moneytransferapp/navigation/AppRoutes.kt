@@ -2,9 +2,12 @@ package com.teamj.moneytransferapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.maya.moneytransferapp.FavoriteContactsScreen
 import com.teamj.moneytransferapp.cards.AddCardScreen
 import com.teamj.moneytransferapp.cards.CardAddedScreen
@@ -59,20 +62,84 @@ object  Route{
 
 }
 @Composable
-fun AppNavHost(onSendNotification: () -> Unit,modifier: Modifier = Modifier){
-    val navController= rememberNavController()
-    NavHost(navController = navController, startDestination = Route.LAST_TRANSACTIONS) {
+fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit, modifier: Modifier = Modifier){
+    NavHost(navController = navController, startDestination = Route.TRANSFER_PH1) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
         composable(route = Route.CARD_ADDED) { CardAddedScreen(navController) }
         composable(Route.SIGNUP) { SignupScreen(navController) }
-        composable(Route.CONTINUE_SIGNUP) { CompleteProfileScreen(navController) }
+        composable(
+            route = "${Route.CONTINUE_SIGNUP}/{name}/{email}/{password}",
+            arguments = listOf(
+                navArgument("name") { type = NavType.StringType},
+                navArgument("email") { type = NavType.StringType},
+                navArgument("password") { type = NavType.StringType}
+            )
+        ) {
+            val name = it.arguments?.getString("name")!!
+            val email = it.arguments?.getString("email")!!
+            val password = it.arguments?.getString("password")!!
+            CompleteProfileScreen(name, email, password, navController = navController)
+        }
+        //composable(Route.CONTINUE_SIGNUP) { CompleteProfileScreen(navController) }
         composable(route = Route.TRANSFER_PH1){ TransferAmountScreen(navController) }
-        composable(route = Route.TRANSFER_CONFIRM){ TransferConfirmationScreen(navController) }
-        composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
+        //composable(route = Route.TRANSFER_CONFIRM){ TransferConfirmationScreen(navController) }
+        composable(
+            route = "${Route.TRANSFER_CONFIRM}/{amount}/{recpName}/{recpNumber}",
+            arguments = listOf(
+                navArgument("amount") { type = NavType.StringType},
+                navArgument("recpName") { type = NavType.StringType},
+                navArgument("recpNumber") { type = NavType.StringType}
+            )
+        ) {
+            val amount = it.arguments?.getString("amount")!!
+            val recpName = it.arguments?.getString("recpName")!!
+            val recpNumber = it.arguments?.getString("recpNumber")!!
+            TransferConfirmationScreen(amount, recpName, recpNumber, navController = navController)
+        }
+        composable(
+            route = "${Route.TRANSFER_PAYMENT}/{amount}/{toName}/{toNumber}/{fromName}/{fromNumber}",
+            arguments = listOf(
+                navArgument("amount") { type = NavType.StringType},
+                navArgument("toName") { type = NavType.StringType},
+                navArgument("toNumber") { type = NavType.StringType},
+                navArgument("fromName") { type = NavType.StringType},
+                navArgument("fromNumber") { type = NavType.StringType}
+            )
+        ) {
+            val amount = it.arguments?.getString("amount")!!
+            val toName = it.arguments?.getString("toName")!!
+            val toNumber = it.arguments?.getString("toNumber")!!
+            val fromName = it.arguments?.getString("fromName")!!
+            val fromNumber = it.arguments?.getString("fromNumber")!!
+            TransferPaymentScreen(amount, toName, toNumber,fromName,fromNumber, navController = navController)
+        }
+        //composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
         composable(route = Route.LOGIN){ SignInScreen() }
-        composable(route = Route.TRANSACTION){ SuccessfulTransactionScreen(navController) }
+        //composable(route = Route.TRANSACTION){ SuccessfulTransactionScreen(navController) }
+        composable(
+            route = "${Route.TRANSACTION}/{amount}/{recpName}/{recpNumber}/{fromName}/{fromNumber}/{date}/{type}",
+            arguments = listOf(
+                navArgument("amount") { type = NavType.IntType},
+                navArgument("recpName") { type = NavType.StringType},
+                navArgument("recpNumber") { type = NavType.StringType},
+                navArgument("fromName") { type = NavType.StringType},
+                navArgument("fromNumber") { type = NavType.StringType},
+                navArgument("date") { type = NavType.StringType},
+                navArgument("type") { type = NavType.StringType}
+
+            )
+        ) {
+            val amount = it.arguments?.getInt("amount")!!
+            val recpName = it.arguments?.getString("recpName")!!
+            val recpNumber = it.arguments?.getString("recpNumber")!!
+            val fromName = it.arguments?.getString("fromName")!!
+            val fromNumber = it.arguments?.getString("fromNumber")!!
+            val date = it.arguments?.getString("date")!!
+            val type = it.arguments?.getString("type")!!
+            SuccessfulTransactionScreen(amount, recpName, recpNumber, fromName,fromNumber,date,type,navController = navController)
+        }
         composable(route = Route.FAVORITES){ FavoriteContactsScreen(navController) }
         composable(route = Route.LAST_TRANSACTIONS){ TransactionsScreen(navController) }
         composable(route = Route.MORE){ MoreScreen(navController) }

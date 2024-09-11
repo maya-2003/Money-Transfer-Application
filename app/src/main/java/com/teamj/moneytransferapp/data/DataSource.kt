@@ -53,26 +53,26 @@ class DataSource {
         return profileItems
     }
 
-    fun getProfileInfoItem(): List<ProfileInfoItem> {
-        val profileInfoItems = mutableListOf<ProfileInfoItem>()
-        profileInfoItems.add(ProfileInfoItem(R.string.full_name_label, R.string.full_name_value))
-        profileInfoItems.add(ProfileInfoItem(R.string.email_label, R.string.email_value))
-        profileInfoItems.add(
-            ProfileInfoItem(
-                R.string.date_of_birth_label,
-                R.string.date_of_birth_value
-            )
-        )
-        profileInfoItems.add(ProfileInfoItem(R.string.country_label, R.string.country_value))
-        profileInfoItems.add(
-            ProfileInfoItem(
-                R.string.bank_account_label,
-                R.string.bank_account_value
-            )
-        )
-
-        return profileInfoItems
-    }
+//    fun getProfileInfoItem(): List<ProfileInfoItem> {
+//        val profileInfoItems = mutableListOf<ProfileInfoItem>()
+//        profileInfoItems.add(ProfileInfoItem(R.string.full_name_label, R.string.full_name_value))
+//        profileInfoItems.add(ProfileInfoItem(R.string.email_label, R.string.email_value))
+//        profileInfoItems.add(
+//            ProfileInfoItem(
+//                R.string.date_of_birth_label,
+//                R.string.date_of_birth_value
+//            )
+//        )
+//        profileInfoItems.add(ProfileInfoItem(R.string.country_label, R.string.country_value))
+//        profileInfoItems.add(
+//            ProfileInfoItem(
+//                R.string.bank_account_label,
+//                R.string.bank_account_value
+//            )
+//        )
+//
+//        return profileInfoItems
+//    }
     fun getMoreOptions(): List<MoreItem> {
         val options = mutableListOf<MoreItem>()
         options.add(MoreItem(R.string.transfer, R.drawable.ic_website))

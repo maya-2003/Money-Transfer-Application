@@ -427,7 +427,7 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
 
 
                         else -> {
-                            navController.navigate(Route.CONTINUE_SIGNUP)
+                            navController.navigate("${Route.CONTINUE_SIGNUP}/$fullName/$email/$password")
                         }
                     }
                 },

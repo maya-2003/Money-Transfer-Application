@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.substring
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuccessfulTransactionScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun SuccessfulTransactionScreen(amount : Int, recpName : String, recpNumber : String, fromName : String, fromNumber : String, date:String, type:String,navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopBar(title = "Successful Transactions", route = Route.LAST_TRANSACTIONS, navController = navController)
@@ -88,7 +89,7 @@ fun SuccessfulTransactionScreen(navController: NavController, modifier: Modifier
                 )
                 .padding(innerPadding)
         ) {
-            TransactionInformation()
+            TransactionInformation(amount, recpName, recpNumber, fromName, fromNumber, date, type)
 
         }
     }
@@ -96,7 +97,7 @@ fun SuccessfulTransactionScreen(navController: NavController, modifier: Modifier
 }
 
 @Composable
-fun TransactionInformation(modifier: Modifier = Modifier) {
+fun TransactionInformation(amount : Int, recpName : String, recpNumber : String, fromName : String, fromNumber : String, date:String, type:String,modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -121,7 +122,7 @@ fun TransactionInformation(modifier: Modifier = Modifier) {
                         fontFamily = FontFamily(Font(R.font.inter_semi_bold))
                     )
                 ) {
-                    append("1000")
+                    append(amount.toString())
                 }
 
                 withStyle(
@@ -147,21 +148,21 @@ fun TransactionInformation(modifier: Modifier = Modifier) {
         )
 
         Text(
-            text = "send money",
+            text = "$type money",
             fontSize = 14.sp,
             color = P300,
             fontFamily = FontFamily(Font(R.font.inter_medium))
         )
 
         Spacer(modifier = modifier.height(20.dp))
-        TransactionDetails()
+        TransactionDetails(amount, recpName, recpNumber, fromName, fromNumber, date, type)
 
     }
 
 }
 
 @Composable
-fun TransactionDetails(modifier: Modifier = Modifier) {
+fun TransactionDetails(amount : Int, recpName : String, recpNumber : String, fromName : String, fromNumber : String ,date:String, type:String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
@@ -207,14 +208,14 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
                         )
                         Spacer(modifier = modifier.height(12.dp))
                         Text(
-                            text = "Asmaa Dosouky",
+                            text = fromName,
                             color = G900,
                             fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                             fontSize = 18.sp
                         )
                         Spacer(modifier = modifier.height(12.dp))
                         Text(
-                            text = "Account xxxx7890",
+                            text = "Account $fromNumber",
                             color = G700,
                             fontFamily = FontFamily(Font(R.font.inter_variable)),
                             fontSize = 16.sp
@@ -267,14 +268,14 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
                         )
                         Spacer(modifier = modifier.height(12.dp))
                         Text(
-                            text = "Jhon Smith",
+                            text = recpName,
                             color = G900,
                             fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                             fontSize = 18.sp
                         )
                         Spacer(modifier = modifier.height(12.dp))
                         Text(
-                            text = "Account xxxx7890",
+                            text = "Account $recpNumber",
                             color = G700,
                             fontFamily = FontFamily(Font(R.font.inter_variable)),
                             fontSize = 16.sp
@@ -333,7 +334,7 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
                     fontFamily = FontFamily(Font(R.font.inter_variable))
                 )
                 Text(
-                    text = "48.555",
+                    text = amount.toString(),
                     color = G100,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
@@ -378,7 +379,7 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
                     fontFamily = FontFamily(Font(R.font.inter_variable))
                 )
                 Text(
-                    text = "20 Jul 2024 7:50 PM",
+                    text = "${date.substring(0,10)} ${date.substring(11,16)}",
                     color = G100,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
@@ -397,5 +398,5 @@ fun TransactionDetails(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 fun SuccessfulTransactionScreenPreview(modifier: Modifier = Modifier) {
-    SuccessfulTransactionScreen(rememberNavController())
+    SuccessfulTransactionScreen(0,"","", "", "","", "",rememberNavController())
 }

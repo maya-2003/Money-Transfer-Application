@@ -64,7 +64,7 @@ import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.common.TransferProgress
 import com.teamj.moneytransferapp.model.Contacts
 import com.teamj.moneytransferapp.navigation.Route
-import com.teamj.moneytransferapp.ui.theme.G0
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
@@ -384,7 +384,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
 
             Button(
                 onClick = {
-                    navController.navigate(Route.TRANSFER_CONFIRM)
+                    navController.navigate("${Route.TRANSFER_CONFIRM}/$money/$rec_name/$rec_account")
                           },
                 modifier = Modifier
                     .fillMaxWidth()

@@ -1,6 +1,7 @@
 package com.teamj.moneytransferapp.api
 
 import android.content.Context
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,10 +11,10 @@ object UserAPIService {
     private lateinit var retrofit: Retrofit
 
 
-    fun initialize(context: Context) {
-        val client = OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
-            val editor = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
-            val token = editor.getString("auth_token", null)
+    fun initialize(context: Context, onTokenExpired: suspend () -> Unit) {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val userPrefs = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
+            val token = userPrefs.getString("auth_token", null)
 
             val authRequest = chain.request().newBuilder().apply {
                 if (token != null) {
@@ -21,8 +22,18 @@ object UserAPIService {
                 }
             }.build()
 
-            chain.proceed(authRequest)
-        }).build()
+            val serverResp = chain.proceed(authRequest)
+
+            if (serverResp.code == 401) {
+                SessionController.clearSession(context)
+
+                runBlocking {
+                    onTokenExpired()
+                }
+            }
+
+            serverResp
+        }.build()
 
         retrofit = Retrofit.Builder()
             .baseUrl("https://sha256-1f39a1226a97.onrender.com/")
@@ -34,5 +45,4 @@ object UserAPIService {
     val callable: UserAPICallable by lazy {
         retrofit.create(UserAPICallable::class.java)
     }
-
 }

@@ -26,13 +26,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -56,6 +61,8 @@ import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P50
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.viewmodels.UserDetailsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,10 +95,22 @@ fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ProfileItems(navController: NavController,profileItems:List<ProfileItem>,modifier: Modifier = Modifier){
+fun ProfileItems(navController: NavController,profileItems:List<ProfileItem>,modifier: Modifier = Modifier,userViewModel : UserDetailsViewModel = viewModel() ){
 
-    val first_initial = stringResource(id = R.string.first_name)[0]
-    val second_initial = stringResource(id = R.string.last_name)[0]
+    val context = LocalContext.current
+    val userDetails by userViewModel.userDetails.collectAsState()
+    var accountName by rememberSaveable { mutableStateOf("name") }
+    var accountInitials by rememberSaveable { mutableStateOf("AB") }
+    LaunchedEffect(Unit) {
+        userViewModel.getUserDetails(context)
+    }
+    if (userDetails != null){
+        val userData = userDetails!!
+        accountName = userData.name
+    }
+    accountInitials=Regex("\\b\\w").findAll(accountName)
+        .joinToString("") { it.value.uppercase() }
+
     Box(
         modifier = modifier
             .fillMaxSize(),
@@ -113,7 +132,7 @@ fun ProfileItems(navController: NavController,profileItems:List<ProfileItem>,mod
                         .background(G40)
                 ) {
                     Text(
-                        text = "$first_initial$second_initial",
+                        text = accountInitials,
                         color = G100,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -121,7 +140,7 @@ fun ProfileItems(navController: NavController,profileItems:List<ProfileItem>,mod
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Asmaa Dosouky",
+                    text = accountName,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                     fontWeight = FontWeight.Black,

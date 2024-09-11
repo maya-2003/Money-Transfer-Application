@@ -18,16 +18,24 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -38,8 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.maya.moneytransferapp.Transaction
-import com.maya.moneytransferapp.TransactionCard
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.common.NavBottomBar
 import com.teamj.moneytransferapp.data.DataSource
@@ -51,6 +57,11 @@ import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.model.Transaction
+import com.teamj.moneytransferapp.api.viewmodels.TransactionsViewModel
+import com.teamj.moneytransferapp.api.viewmodels.UserDetailsViewModel
+import com.teamj.moneytransferapp.transaction.TransactionItem
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,7 +83,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
                 )
                 .padding(innerPadding)
         ) {
-            HomeItems(transactions = DataSource().getTransactions(), balance = "1000")
+            HomeItems()
 
 
 
@@ -81,7 +92,26 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
 
 }
 @Composable
-fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifier = Modifier) {
+fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewModel= viewModel(), transViewModel: TransactionsViewModel = viewModel()) {
+
+    val context = LocalContext.current
+    val transactions by transViewModel.transactions.collectAsState(initial = emptyList())
+    val userDetails by userViewModel.userDetails.collectAsState()
+    var accountName by rememberSaveable { mutableStateOf("name") }
+    var accountBalance by rememberSaveable { mutableStateOf(0) }
+    var accountInitials by rememberSaveable { mutableStateOf("AB") }
+    LaunchedEffect(Unit) {
+        transViewModel.getTransactions(context)
+        userViewModel.getUserDetails(context)
+    }
+    if (userDetails != null){
+        val userData = userDetails!!
+        accountName = userData.name
+        accountBalance = userData.accounts[0].balance
+    }
+    accountInitials=Regex("\\b\\w").findAll(accountName)
+        .joinToString("") { it.value.uppercase() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -96,9 +126,6 @@ fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifi
                     .height(48.dp)
             ) {
 
-                val first_initial = stringResource(id = R.string.first_name)[0]
-                val second_initial = stringResource(id = R.string.last_name)[0]
-
                 Row {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -108,7 +135,7 @@ fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifi
                             .background(G40)
                     ) {
                         Text(
-                            text = "$first_initial$second_initial",
+                            text = accountInitials,
                             color = G100,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
@@ -125,7 +152,7 @@ fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifi
                             fontFamily = FontFamily(Font(R.font.inter_variable))
                         )
                         Text(
-                            text = "${stringResource(id = R.string.first_name)} ${stringResource(id = R.string.last_name)}",
+                            text = accountName,
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.inter_medium)),
                             color = G900
@@ -161,7 +188,7 @@ fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifi
                         fontFamily = FontFamily(Font(R.font.inter_medium)),
                         color = G0)
                     Spacer(modifier = modifier.height(12.dp))
-                    Text(text = "$balance",
+                    Text(text = accountBalance.toString(),
                         fontSize = 28.sp,
                         fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                         color = G0)
@@ -190,14 +217,17 @@ fun HomeItems(transactions: List<Transaction>, balance: String, modifier: Modifi
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
+            
             LazyColumn(
                 modifier = Modifier
                     .background(Color.White)
                     .padding(1.dp)
             ) {
-                items(transactions) { transaction ->
-                    TransactionCard(transaction)
+                items(transactions.size) { position ->
+                    val transactionType = if (userDetails!!.accounts[0].accountNumber == transactions[position].toAccountNumber) "Received"
+                    else "Sent"
+                    TransactionCard(transactions[position], transactionType)
+                    HorizontalDivider(thickness = 1.dp, color = G40)
                 }
             }
         }

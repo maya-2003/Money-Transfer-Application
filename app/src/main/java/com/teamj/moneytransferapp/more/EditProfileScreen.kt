@@ -73,6 +73,9 @@ import com.teamj.moneytransferapp.ui.theme.LabelStyle
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.model.UpdatedDetails
+import com.teamj.moneytransferapp.api.viewmodels.EditDetailsViewModel
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -103,7 +106,7 @@ fun EditProfileScreen(navController: NavController, modifier: Modifier = Modifie
 
 }
 @Composable
-fun EditProfileFields(navController: NavController, modifier: Modifier = Modifier) {
+fun EditProfileFields(navController: NavController, modifier: Modifier = Modifier, viewModel: EditDetailsViewModel = viewModel()) {
     val context = LocalContext.current
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -219,6 +222,12 @@ fun EditProfileFields(navController: NavController, modifier: Modifier = Modifie
 
             Button(
                 onClick = {
+                    viewModel.updateDetails(context, UpdatedDetails(
+                        name = fullName,
+                        country = countryName,
+                        email = email,
+                        dateOfBirth = dob
+                    ))
                     navController.navigate(Route.SETTINGS)
                 },
                 modifier = Modifier
@@ -253,7 +262,7 @@ fun DatePicker(dateSelected: (String) -> Unit, modifier: Modifier = Modifier) {
 
     if(showDatePicker)
         DateChooser(onConfirm = {
-            val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.JAPAN)
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
             dateMillis = it.selectedDateMillis!!
             selectedDate= dateFormatter.format(dateMillis)
             dateSelected(selectedDate)
@@ -266,7 +275,7 @@ fun DatePicker(dateSelected: (String) -> Unit, modifier: Modifier = Modifier) {
         value = selectedDate,
         onValueChange = { },
         readOnly = true,
-        label = { Text("DD/MM/YYY", style = FieldStyle) },
+        label = { Text("YYYY-MM-DD", style = FieldStyle) },
         trailingIcon = {
             IconButton(onClick = {
                 showDatePicker = !showDatePicker

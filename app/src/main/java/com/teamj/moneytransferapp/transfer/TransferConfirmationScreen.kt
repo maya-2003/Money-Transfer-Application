@@ -35,15 +35,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -54,6 +58,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.viewmodels.UserDetailsViewModel
+import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
 import com.teamj.moneytransferapp.common.NavBottomBar
 import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.common.TransferProgress
@@ -70,11 +76,15 @@ import com.teamj.moneytransferapp.ui.theme.P50
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.S400
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.model.Transfer
+import com.teamj.moneytransferapp.api.model.UserData
+import com.teamj.moneytransferapp.api.viewmodels.TransferViewModel
 import com.teamj.moneytransferapp.ui.theme.cardColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferConfirmationScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun TransferConfirmationScreen(amount:String, recpName:String, recpNumber:String,navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopBar("Transfer", Route.HOME,navController)
@@ -102,7 +112,7 @@ fun TransferConfirmationScreen(navController: NavController, modifier: Modifier 
             ) {
                 TransferProgress(2)
                 Spacer(modifier = modifier.height(28.dp))
-                TransferConfirmation(navController)
+                TransferConfirmation(amount, recpName, recpNumber,navController)
             }
 
         }
@@ -112,9 +122,20 @@ fun TransferConfirmationScreen(navController: NavController, modifier: Modifier 
 
 
 @Composable
-fun TransferConfirmation(navController: NavController,modifier: Modifier = Modifier) {
-    var amount by remember { mutableStateOf(100) }
-    var currency by remember {
+fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navController: NavController,modifier: Modifier = Modifier, viewModel: UserDetailsViewModel= viewModel(), transferViewModel: TransferViewModel = viewModel()) {
+    val userDetails by viewModel.userDetails.collectAsState()
+    var accountName by rememberSaveable { mutableStateOf("name") }
+    var accountNumber by rememberSaveable { mutableStateOf("xxx 123") }
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.getUserDetails(context)
+    }
+    if (userDetails != null){
+        val userData = userDetails!!
+        accountName = userData.name
+        accountNumber = userData.accounts[0].accountNumber
+    }
+    var currency by rememberSaveable {
         mutableStateOf("USD")
     }
     Column(
@@ -159,7 +180,7 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                 fontFamily = FontFamily(Font(R.font.inter_semi_bold))
             )
             Text(
-                text = "48.555",
+                text = amount,
                 color = G700,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
@@ -217,14 +238,14 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Asmaa Dosouky",
+                                text = accountName,
                                 color = G900,
                                 fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                                 fontSize = 18.sp
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Account xxxx7890",
+                                text = "Account $accountNumber",
                                 color = G700,
                                 fontFamily = FontFamily(Font(R.font.inter_variable)),
                                 fontSize = 16.sp
@@ -277,14 +298,14 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Jhon Smith",
+                                text = recpName,
                                 color = G900,
                                 fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                                 fontSize = 18.sp
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Account xxxx7890",
+                                text = "Account $recpNumber",
                                 color = G700,
                                 fontFamily = FontFamily(Font(R.font.inter_variable)),
                                 fontSize = 16.sp
@@ -316,7 +337,11 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
         }
         Spacer(modifier = modifier.height(50.dp))
         Button(
-            onClick = {navController.navigate(Route.TRANSFER_PAYMENT)},
+            onClick = {
+                transferViewModel.transferMoney(Transfer(recpNumber,amount.toInt(),recpName) )
+                //navController.navigate(Route.TRANSFER_PAYMENT)
+                navController.navigate("${Route.TRANSFER_PAYMENT}/$amount/$recpName/$recpNumber/$accountName/$accountNumber")
+                      },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(54.dp),
@@ -364,5 +389,5 @@ fun TransferConfirmation(navController: NavController,modifier: Modifier = Modif
 @Preview
 @Composable
 private fun TransferConfirmationScreenPreview() {
-    TransferConfirmationScreen(rememberNavController())
+    TransferConfirmationScreen("100","FN","xxx123",rememberNavController())
 }

@@ -60,7 +60,7 @@ import com.teamj.moneytransferapp.ui.theme.YellowGrad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferPaymentScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun TransferPaymentScreen(amount:String, toName:String, toNumber:String, fromName: String, fromNumber:String,navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopBar("Transfer", Route.HOME,navController)
@@ -88,7 +88,7 @@ fun TransferPaymentScreen(navController: NavController, modifier: Modifier = Mod
             ) {
                 TransferProgress(3)
                 Spacer(modifier = modifier.height(28.dp))
-                TransferPayment(navController)
+                TransferPayment(amount, toName, toNumber, fromName, fromNumber,navController)
             }
 
         }
@@ -98,7 +98,7 @@ fun TransferPaymentScreen(navController: NavController, modifier: Modifier = Mod
 
 
 @Composable
-fun TransferPayment(navController: NavController,modifier: Modifier = Modifier) {
+fun TransferPayment(amount:String, toName:String, toNumber:String, fromName: String, fromNumber:String,navController: NavController,modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -165,14 +165,14 @@ fun TransferPayment(navController: NavController,modifier: Modifier = Modifier) 
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Asmaa Dosouky",
+                                text = fromName,
                                 color = G900,
                                 fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                                 fontSize = 18.sp
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Account xxxx7890",
+                                text = "Account $fromNumber",
                                 color = G700,
                                 fontFamily = FontFamily(Font(R.font.inter_variable)),
                                 fontSize = 16.sp
@@ -225,14 +225,14 @@ fun TransferPayment(navController: NavController,modifier: Modifier = Modifier) 
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Jhon Smith",
+                                text = toName,
                                 color = G900,
                                 fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                                 fontSize = 18.sp
                             )
                             Spacer(modifier = modifier.height(12.dp))
                             Text(
-                                text = "Account xxxx7890",
+                                text = "Account $toNumber",
                                 color = G700,
                                 fontFamily = FontFamily(Font(R.font.inter_variable)),
                                 fontSize = 16.sp
@@ -274,7 +274,7 @@ fun TransferPayment(navController: NavController,modifier: Modifier = Modifier) 
                 fontFamily = FontFamily(Font(R.font.inter_variable))
             )
             Text(
-                text = "1000 EGP",
+                text = "$amount EGP",
                 color = G700,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
@@ -336,5 +336,5 @@ fun TransferPayment(navController: NavController,modifier: Modifier = Modifier) 
 @Preview
 @Composable
 private fun TransferConfirmationScreenPreview() {
-    TransferPaymentScreen(rememberNavController())
+    TransferPaymentScreen("test","test","test","test","test",rememberNavController())
 }

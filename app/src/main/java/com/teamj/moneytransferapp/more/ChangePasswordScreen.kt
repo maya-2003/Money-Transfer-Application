@@ -17,7 +17,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +24,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,17 +46,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.viewmodels.PasswordViewModel
 import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.FieldStyle
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G10
 import com.teamj.moneytransferapp.ui.theme.G70
-import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.LabelStyle
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.model.Password
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,24 +91,24 @@ fun ChangePasswordScreen(navController: NavController, modifier: Modifier = Modi
 }
 
 @Composable
-fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modifier) {
+fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modifier, viewModel: PasswordViewModel =viewModel()) {
     val context = LocalContext.current
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
+    var oldPassword by rememberSaveable { mutableStateOf("") }
+    var newPassword by rememberSaveable { mutableStateOf("") }
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
-    var isConfirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+    var isNewPasswordVisible by rememberSaveable { mutableStateOf(false) }
     val icon1 = if (isPasswordVisible)
         R.drawable.ic_visible
     else
         R.drawable.ic_invisible
-    val icon2 = if (isConfirmPasswordVisible)
+    val icon2 = if (isNewPasswordVisible)
         R.drawable.ic_visible
     else
         R.drawable.ic_invisible
 
 
     var passwordError by rememberSaveable { mutableStateOf(false) }
-    var confirmPasswordError by rememberSaveable { mutableStateOf(false) }
+    var newPasswordError by rememberSaveable { mutableStateOf(false) }
     var passwordPatternError by rememberSaveable { mutableStateOf(false) }
 
 
@@ -140,9 +140,9 @@ fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modi
 
 
             OutlinedTextField(
-                value = password,
+                value = oldPassword,
                 onValueChange = {
-                    password = it
+                    oldPassword = it
                     passwordError = false
                 },
                 label = { Text("Enter your password", style = FieldStyle) },
@@ -199,25 +199,25 @@ fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modi
                     .padding(bottom = 8.dp, top = 8.dp),
             )
             OutlinedTextField(
-                value = confirmPassword,
+                value = newPassword,
                 onValueChange = {
-                    confirmPassword = it
-                    confirmPasswordError = false
+                    newPassword = it
+                    newPasswordError = false
                     passwordPatternError = false
                 },
                 label = { Text("Enter your password", style = FieldStyle) },
                 trailingIcon = {
                     IconButton(onClick = {
-                        isConfirmPasswordVisible = !isConfirmPasswordVisible
+                        isNewPasswordVisible = !isNewPasswordVisible
                     }) {
                         Icon(
                             painter = painterResource(id = icon2),
                             contentDescription = "Person Icon",
-                            tint = if (confirmPasswordError) P300 else G70,
+                            tint = if (newPasswordError) P300 else G70,
                         )
                     }
                 },
-                visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None
+                visualTransformation = if (isNewPasswordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = modifier
@@ -227,12 +227,12 @@ fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modi
                     unfocusedContainerColor = G10,
                     disabledContainerColor = G10,
                     errorContainerColor = G10,
-                    focusedBorderColor = if (confirmPasswordError || passwordPatternError) P300 else G70,
-                    unfocusedBorderColor = if (confirmPasswordError || passwordPatternError) P300 else G70,
+                    focusedBorderColor = if (newPasswordError || passwordPatternError) P300 else G70,
+                    unfocusedBorderColor = if (newPasswordError || passwordPatternError) P300 else G70,
                     focusedLabelColor = G70,
                 )
             )
-            if (confirmPasswordError) {
+            if (newPasswordError) {
                 Text(
                     text = "Required field",
                     fontSize = 12.sp,
@@ -265,11 +265,11 @@ fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modi
 
             Button(
                 onClick = {
-                    val validation = validatePasswords(password, confirmPassword)
+                    val validation = validatePasswords(oldPassword, newPassword)
                     when (validation) {
                         0 -> {
-                            passwordError = password.isBlank()
-                            confirmPasswordError = confirmPassword.isBlank()
+                            passwordError = oldPassword.isBlank()
+                            newPasswordError = newPassword.isBlank()
                             Toast.makeText(context, "Please fill all fields", Toast.LENGTH_LONG)
                                 .show()
                         }
@@ -286,6 +286,7 @@ fun ChangePasswordFields(navController: NavController, modifier: Modifier = Modi
 
 
                         else -> {
+                            viewModel.changePassword(context, Password(oldPassword = oldPassword, newPassword = newPassword))
                             navController.navigate(Route.SETTINGS)
                         }
                     }

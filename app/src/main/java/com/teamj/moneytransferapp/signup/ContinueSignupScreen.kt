@@ -75,10 +75,13 @@ import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.LabelStyle
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P900
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.model.User
+import com.teamj.moneytransferapp.api.viewmodels.UserRegisterViewModel
 import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompleteProfileScreen(navController: NavController, modifier: Modifier=Modifier) {
+fun CompleteProfileScreen(name: String, email: String, password: String,navController: NavController, modifier: Modifier=Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -114,7 +117,7 @@ fun CompleteProfileScreen(navController: NavController, modifier: Modifier=Modif
                 )
                 .padding(innerPadding)
         ) {
-            CountryPicker(navController)
+            CountryPicker(name, email, password,navController)
         }
     }
 }
@@ -122,7 +125,7 @@ fun CompleteProfileScreen(navController: NavController, modifier: Modifier=Modif
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountryPicker(navController: NavController, modifier: Modifier = Modifier) {
+fun CountryPicker(name: String, email: String, password: String,navController: NavController, modifier: Modifier = Modifier, viewModel: UserRegisterViewModel =viewModel()) {
     val context = LocalContext.current
     var countryName by remember { mutableStateOf("") }
     var dob by remember { mutableStateOf("") }
@@ -190,7 +193,14 @@ fun CountryPicker(navController: NavController, modifier: Modifier = Modifier) {
                 dob = date
             })
             Button(
-                onClick = { },
+                onClick = {
+                    viewModel.registerUser(
+                        User(name = name,
+                        country = countryName,
+                        email = email,
+                        password = password,
+                        dateOfBirth = dob))
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp, bottom = 4.dp)
@@ -242,7 +252,7 @@ fun DateOfBirthPicker(dateSelected: (String) -> Unit, modifier: Modifier = Modif
 
     if(showDatePicker)
         DatePickerChooser(onConfirm = {
-            val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.JAPAN)
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
             dateMillis = it.selectedDateMillis!!
             selectedDate= dateFormatter.format(dateMillis)
             dateSelected(selectedDate)
@@ -256,7 +266,7 @@ fun DateOfBirthPicker(dateSelected: (String) -> Unit, modifier: Modifier = Modif
         value = selectedDate,
         onValueChange = { },
         readOnly = true,
-        label = { Text("DD/MM/YYY", style = FieldStyle) },
+        label = { Text("YYYY-MM-DD", style = FieldStyle) },
         trailingIcon = {
             IconButton(onClick = {
                 showDatePicker = !showDatePicker
@@ -410,5 +420,5 @@ fun DatePickerChooser(onConfirm: (DatePickerState) -> Unit, onDismiss: () -> Uni
 @Preview(showSystemUi = true)
 @Composable
 fun CountryPickerScreenPreview() {
-    CompleteProfileScreen(rememberNavController())
+    CompleteProfileScreen("","","",rememberNavController())
 }

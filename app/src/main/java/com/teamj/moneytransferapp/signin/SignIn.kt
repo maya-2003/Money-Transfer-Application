@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,10 +46,15 @@ import com.teamj.moneytransferapp.ui.theme.G10
 import com.teamj.moneytransferapp.ui.theme.G70
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P900
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.MainActivity
+import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
 
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier) {
+fun SignInScreen(modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
+    val context= LocalContext.current
+    val activity = context as? MainActivity
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -193,10 +199,17 @@ fun SignInScreen(modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    validateData(
+                    val code =validateData(
                         password = password.toString(),
                         email = email.toString(),
                     )
+                    when(code){
+                        1->{
+                            viewModel.loginUser(context, email.value, password.value) { token, id ->
+                                activity?.storePrefs(token, id)
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

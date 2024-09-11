@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.api.UserAPIService
 import com.teamj.moneytransferapp.navigation.AppNavHost
 import com.teamj.moneytransferapp.ui.theme.MoneyTransferAppTheme
@@ -24,12 +25,20 @@ import com.teamj.moneytransferapp.ui.theme.MoneyTransferAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        UserAPIService.initialize(this)
         enableEdgeToEdge()
         setContent {
+            val navController= rememberNavController()
             MoneyTransferAppTheme {
-                AppNavHost(onSendNotification = { sendNotification(this) })
+                AppNavHost(navController,onSendNotification = { sendNotification(this) })
             }
+            UserAPIService.initialize(this){
+                runOnUiThread {
+                    navController.navigate("login") {
+                        popUpTo(0)
+                    }
+                }
+            }
+
         }
         createNotificationChannel()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
