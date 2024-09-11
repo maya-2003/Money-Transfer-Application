@@ -13,27 +13,37 @@ import kotlinx.coroutines.launch
 
 class FavoritesViewModel : ViewModel() {
 
-    private val _favorites = MutableStateFlow<List<FavContacts>>(emptyList())
-    val favorites = _favorites.asStateFlow()
-
-    fun getFavorites(context: Context) {
-
+    fun addFavorite(favReq: FavReq) {
         viewModelScope.launch {
+
             try {
 
-                val userId = SessionController.getUserId(context)
-                val addFavorite = UserAPICallable.getFav
-                val getFavorite = UserAPIService.getFav()
-                val delFavorite = UserAPIService.getFav()
+                val response = UserAPIService.callable.addFav(favReq)
 
-                _favorites.value = response.transactions
+                Log.d("Added Fav", "${response.message}")
 
+            } catch (e: Exception) {
 
-            } catch (exception: Exception) {
-                Log.e("FavoritesViewModel", "Error fetching favorites: ${exception.message}")
+                Log.e("addingError", "${e.message}")
+
             }
-
         }
+    }
 
+    fun deleteFavorite(favDelReq: FavDelReq) {
+        viewModelScope.launch {
+
+            try {
+
+                val response = UserAPIService.callable.deleteFav(favDelReq)
+
+                Log.d("Deleted Fav", "${response.message}")
+
+            } catch (e: Exception) {
+
+                Log.e("addingError", "${e.message}")
+
+            }
+        }
     }
 }

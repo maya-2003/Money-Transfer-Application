@@ -1,5 +1,6 @@
 package com.maya.moneytransferapp
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,13 +43,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.model.FavReq
+import com.teamj.moneytransferapp.model.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
@@ -57,7 +65,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteContactsScreen(navController: NavController) {
+fun FavoriteContactsScreen(
+    navController: NavController,
+    viewModel: FavoritesViewModel = viewModel()
+) {
     val contacts = remember { mutableStateListOf<Contacts>() }
     var showEditDialog by remember { mutableStateOf(false) }
     var selectedContactIndex by remember { mutableStateOf(-1) }
@@ -91,7 +102,15 @@ fun FavoriteContactsScreen(navController: NavController) {
                         Text(
                             text = "Favourite",
                             modifier = Modifier
-                                .padding(start = 100.dp)
+                                .padding(start = 88.dp),
+                            style = TextStyle(
+                                fontSize = 24.sp,
+                                fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
+                                fontWeight = FontWeight(600),
+                                color = Color(0xFF24221E),
+
+                                textAlign = TextAlign.Center,
+                            )
                         )
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -151,7 +170,15 @@ fun FavoriteContactsScreen(navController: NavController) {
 //                                Make Bold ,
                                 fontSize = 20.sp,
                                 modifier = Modifier
-                                    .padding(top = 10.dp)
+                                    .padding(top = 10.dp),
+                                style = TextStyle(
+                                    fontSize = 24.sp,
+                                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                                    fontWeight = FontWeight(600),
+                                    color = Color(0xFF24221E),
+
+                                    textAlign = TextAlign.Center,
+                                )
                             )
                         }
 
@@ -162,8 +189,8 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 contact = contact,
                                 onEditClick = {
                                     selectedContactIndex = index
-                                    contactName = contact.name
-                                    accountNumber = contact.accountNumber
+                                    contactName = contact.recipientName
+                                    accountNumber = contact.recipientAccountNumber
                                     showEditDialog = true
                                     coroutineScope.launch {
                                         scaffoldState.bottomSheetState.expand()
@@ -172,7 +199,10 @@ fun FavoriteContactsScreen(navController: NavController) {
 
                                 onDeleteClick = {
                                     contacts.removeAt(index)
-                                }
+                                },
+
+                                theDel = contact.recipientAccountNumber
+
                             )
                         }
 
@@ -192,10 +222,14 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 contactName = ""
                                 accountNumber = ""
                                 showEditDialog = true
-                                coroutineScope.launch { scaffoldState.bottomSheetState.expand()
+                                coroutineScope.launch {
+                                    scaffoldState.bottomSheetState.expand()
                                 }
-                            }) {
-                            Text("Add New Contact")
+                            })
+                        {
+                            Text(
+                                "Add New Contact",
+                            )
                         }
 
                         if (showEditDialog) {
@@ -262,6 +296,7 @@ fun FavoriteContactsScreen(navController: NavController) {
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = P300
                                         ),
+
                                         onClick = {
                                             if (selectedContactIndex >= 0) {
 
@@ -278,7 +313,13 @@ fun FavoriteContactsScreen(navController: NavController) {
                                             }
                                             showEditDialog = false
                                             coroutineScope.launch {}
-                                        }
+                                            viewModel.addFavorite(
+                                                FavReq(
+                                                    contactName,
+                                                    accountNumber
+                                                )
+                                            )
+                                        },
                                     )
                                     {
                                         Text("Save")

@@ -1,6 +1,6 @@
 package com.teamj.moneytransferapp.model
 
-data class FavRecp (
+data class FavReq (
     val recipientName: String,
     val recipientAccountNumber: String
 )

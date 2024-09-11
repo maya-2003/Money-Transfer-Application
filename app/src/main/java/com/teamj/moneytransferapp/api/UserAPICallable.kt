@@ -1,12 +1,12 @@
 package com.teamj.moneytransferapp.api
 
-import retrofit2.Response
+import com.teamj.moneytransferapp.model.FavDelReq
+import com.teamj.moneytransferapp.model.FavReq
+import com.teamj.moneytransferapp.model.FavResp
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
 
 interface UserAPICallable {
 //    @POST("/api/v1/auth/register")
@@ -47,4 +47,20 @@ interface UserAPICallable {
 //    suspend fun getTransactioHistory(
 //        @Path("accountId") customerId: Int
 //    ): TransactionRoot
+
+        @POST("/api/v1/favorites/add")
+    suspend fun addFav(
+        @Body details: FavReq
+    ): FavResp
+
+        @GET("/api/v1/favorites")
+    suspend fun getFav(
+    ): List<FavReq>
+
+        @DELETE("/api/v1/favorites/delete")
+    suspend fun deleteFav(
+        @Body details: FavDelReq
+    ): FavResp
+
+
 }
