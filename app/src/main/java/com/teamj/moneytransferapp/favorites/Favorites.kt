@@ -72,6 +72,7 @@ fun FavoriteContactsScreen(
 ) {
     val favList by viewModel.favoritesList.collectAsState()
     val contacts = remember { mutableStateListOf<Contacts>() }
+    var showAddDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
     var selectedContactIndex by remember { mutableStateOf(-1) }
     var contactName by remember { mutableStateOf("") }
@@ -232,12 +233,13 @@ fun FavoriteContactsScreen(
                             )
                         }
 
-                        if (showEditDialog) {
+                        if (showEditDialog || showAddDialog) {
                             ModalBottomSheet(
                                 modifier = Modifier.fillMaxHeight(),
                                 sheetState = sheetState,
                                 onDismissRequest = {
                                     showEditDialog = false
+                                    showAddDialog = false
                                 }
                             ) {
                                 Column(
@@ -256,75 +258,82 @@ fun FavoriteContactsScreen(
                                             contentDescription = null,
                                             modifier = Modifier.size(24.dp),
                                         )
-                                        Text(
-                                            text = "Edit",
-                                            fontSize = 18.sp,
-                                            color = P300
-                                        )
-                                    }
-
-                                    Spacer(modifier = Modifier.height(20.dp))
-
-                                    OutlinedTextField(
-                                        modifier = Modifier
-                                            .fillMaxWidth(),
-                                        value = contactName,
-                                        onValueChange = { contactName = it },
-                                        label = { Text("Recipient Name") },
-
-                                        )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    OutlinedTextField(
-                                        modifier = Modifier
-                                            .fillMaxWidth(),
-                                        value = accountNumber,
-                                        onValueChange = { accountNumber = it },
-                                        label = { Text("Recipient Account") },
-                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    )
-
-                                    Spacer(modifier = Modifier.height(20.dp))
-
-                                    Button(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(top = 24.dp, bottom = 4.dp)
-                                            .height(54.dp),
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = P300
-                                        ),
-
-                                        onClick = {
-                                            if (selectedContactIndex >= 0) {
-
-                                                contacts[selectedContactIndex] =
-                                                    Contacts(contactName, accountNumber)
-
-                                            } else {
-                                                contacts.add(
-                                                    Contacts(
-                                                        contactName,
-                                                        accountNumber
-                                                    )
-                                                )
-                                            }
-                                            showEditDialog = false
-                                            coroutineScope.launch {}
-                                            viewModel.addFavorite(
-                                                FavReq(
-                                                    contactName,
-                                                    accountNumber
-                                                )
+                                        if (showEditDialog) {
+                                            Text(
+                                                text = " Edit",
+                                                fontSize = 18.sp,
+                                                color = P300
                                             )
-                                        },
-                                    )
-                                    {
-                                        Text("Save")
+                                        } else {
+                                            Text(
+                                                text = " Add",
+                                                fontSize = 18.sp,
+                                                color = P300
+                                            )
+                                        }
                                     }
                                 }
+                            }
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                value = contactName,
+                                onValueChange = { contactName = it },
+                                label = { Text("Recipient Name") },
+
+                                )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                value = accountNumber,
+                                onValueChange = { accountNumber = it },
+                                label = { Text("Recipient Account") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            )
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Button(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 24.dp, bottom = 4.dp)
+                                    .height(54.dp),
+                                shape = RoundedCornerShape(8.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = P300
+                                ),
+
+                                onClick = {
+                                    if (selectedContactIndex >= 0) {
+
+                                        contacts[selectedContactIndex] =
+                                            Contacts(contactName, accountNumber)
+
+                                    } else {
+                                        contacts.add(
+                                            Contacts(
+                                                contactName,
+                                                accountNumber
+                                            )
+                                        )
+                                    }
+                                    showEditDialog = false
+                                    coroutineScope.launch {}
+                                    viewModel.addFavorite(
+                                        FavReq(
+                                            contactName,
+                                            accountNumber
+                                        )
+                                    )
+                                },
+                            )
+                            {
+                                Text("Save")
                             }
                         }
                     }
@@ -333,6 +342,7 @@ fun FavoriteContactsScreen(
         )
     }
 }
+
 
 @Preview(showSystemUi = false, showBackground = false)
 @Composable

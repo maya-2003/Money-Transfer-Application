@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class TransactionsViewModel : ViewModel() {
     private val _transactions = MutableStateFlow<List<Transaction>>(emptyList())
     val transactions = _transactions.asStateFlow()
+
     fun getTransactions(context: Context) {
 
         viewModelScope.launch {

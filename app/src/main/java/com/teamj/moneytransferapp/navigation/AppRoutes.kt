@@ -18,7 +18,6 @@ import com.teamj.moneytransferapp.cards.CardAddedScreen
 import com.teamj.moneytransferapp.cards.CardSplashScreen
 import com.teamj.moneytransferapp.signup.CompleteProfileScreen
 import com.teamj.moneytransferapp.cards.OTPScreenBar
-import com.teamj.moneytransferapp.corefun.TouchAlertDialog
 import com.teamj.moneytransferapp.error.ErrorScreen
 import com.teamj.moneytransferapp.home.HomeScreen
 import com.teamj.moneytransferapp.more.ChangePasswordScreen
@@ -91,7 +90,6 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
     }
 
     NavHost(navController = navController, startDestination = Route.SPLASH) {
-
 
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }

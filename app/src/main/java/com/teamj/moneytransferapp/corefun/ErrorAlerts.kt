@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ import com.teamj.moneytransferapp.ui.theme.G900
 
 
 @Composable
-fun TouchAlertDialog(emessage: String, isDialogVisible: Boolean) {
+fun ErrorAlertDialog(emessage: String, isDialogVisible: Boolean) {
 
     var isDialogVisible by remember { mutableStateOf(true) }
     var errorMessage = remember {mutableStateOf( emessage)}

@@ -20,21 +20,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,9 +51,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.viewmodels.TransferViewModel
 import com.teamj.moneytransferapp.common.NavBottomBar
 import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.common.TransferProgress
@@ -72,7 +69,7 @@ import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
 
 @Composable
-fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modifier,viewModel: TransferViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopBar("Transfer", Route.HOME, navController)
@@ -98,12 +95,12 @@ fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modi
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Spacer(modifier = modifier.height(20.dp))
                 TransferProgress(1)
                 Spacer(modifier = modifier.height(20.dp))
                 TransferAmountInfo(navController)
             }
-
         }
     }
 
@@ -111,7 +108,7 @@ fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier) {
+fun TransferAmountInfo(navController: NavController, modifier: Modifier = Modifier) {
     var showEditDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val contacts = remember { mutableStateListOf<Contacts>() }
@@ -180,7 +177,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                         .padding(start = 12.dp, end = 12.dp)
                         .height(110.dp)
 
-                    ) {
+                ) {
                     Text(
                         text = "Amount",
                         style = TextStyle(
@@ -226,6 +223,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                 }
 
             }
+
             Spacer(modifier = Modifier.height(12.dp))
 
             Column(
@@ -287,19 +285,17 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                             textAlign = TextAlign.Center,
                         )
                     )
-                    IconButton(onClick = {showEditDialog = true}) {
+                    IconButton(onClick = { showEditDialog = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.fav_arrow),
                             contentDescription = null,
-                            tint=P300,
+                            tint = P300,
                             modifier = Modifier
                                 .width(20.dp)
                                 .height(20.dp)
                                 .padding(start = 4.dp)
                         )
                     }
-
-
                 }
 
                 OutlinedTextField(
@@ -385,7 +381,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
             Button(
                 onClick = {
                     navController.navigate("${Route.TRANSFER_CONFIRM}/$money/$rec_name/$rec_account")
-                          },
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
@@ -400,48 +396,44 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                     fontFamily = FontFamily(Font(R.font.inter_medium)),
                 )
             }
-Spacer(modifier = modifier.height(16.dp))
+            Spacer(modifier = modifier.height(16.dp))
             if (showEditDialog) {
 
-                        ModalBottomSheet(
-                            modifier = Modifier.fillMaxHeight(),
-                            sheetState = sheetState,
-                            onDismissRequest = { showEditDialog = false }
+                ModalBottomSheet(
+                    modifier = Modifier.fillMaxHeight(),
+                    sheetState = sheetState,
+                    onDismissRequest = { showEditDialog = false }
+                ) {
+
+                    contacts.forEachIndexed { index, contact ->
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .background(color = P50),
+                            shape = RoundedCornerShape(8.dp)
                         ) {
-
-                            contacts.forEachIndexed { index, contact ->
-
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp)
-                                        .background(color = P50),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    FavoritePicker(
-                                        name = contact.name,
-                                        account = contact.accountNumber,
-                                        onFavoriteClick = {
-                                            rec_name = contact.name
-                                            rec_account = contact.accountNumber
-                                            showDialog = false
-                                        }
-                                    )
-
+                            FavoritePicker(
+                                name = contact.name,
+                                account = contact.accountNumber,
+                                onFavoriteClick = {
+                                    rec_name = contact.name
+                                    rec_account = contact.accountNumber
+                                    showDialog = false
                                 }
-                            }
+                            )
+
                         }
                     }
                 }
             }
         }
-
-
-
+    }
+}
 
 
 @Composable
-
 fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit) {
 
     val contacts = remember { mutableStateListOf<Contacts>() }
