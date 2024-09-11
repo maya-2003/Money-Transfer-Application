@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.maya.moneytransferapp.FavoriteContactsScreen
 import com.teamj.moneytransferapp.cards.AddCardScreen
 import com.teamj.moneytransferapp.cards.CardAddedScreen
+import com.teamj.moneytransferapp.cards.CardCountriesScreen
 import com.teamj.moneytransferapp.cards.CardSplashScreen
 import com.teamj.moneytransferapp.signup.CompleteProfileScreen
 import com.teamj.moneytransferapp.cards.OTPScreenBar
@@ -59,11 +60,12 @@ object  Route{
     const val NO_WIFI = "no_wifi"
     const val ONBOARDING = "onboarding"
     const val SPLASH = "splash"
+    const val CARD_CURRENCY = "card_currency"
 
 }
 @Composable
 fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit, modifier: Modifier = Modifier){
-    NavHost(navController = navController, startDestination = Route.SPLASH) {
+    NavHost(navController = navController, startDestination = Route.FAVORITES) {
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
@@ -153,6 +155,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
         composable(route = Route.NO_WIFI){ InternetErrorScreen() }
         composable(route = Route.ONBOARDING){ Onboarding(navController) }
         composable(route = Route.SPLASH){ SplashScreen(navController) }
+        composable(route = Route.CARD_CURRENCY){ CardCountriesScreen(navController) }
 
     }
 }

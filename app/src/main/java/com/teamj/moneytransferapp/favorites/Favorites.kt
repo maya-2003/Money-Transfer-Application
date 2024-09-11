@@ -31,6 +31,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,24 +51,32 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.viewmodels.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.favorites.FavDelReq
+import com.teamj.moneytransferapp.favorites.FavReq
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteContactsScreen(navController: NavController) {
+fun FavoriteContactsScreen(navController: NavController, viewModel: FavoritesViewModel = viewModel()) {
     val contacts = remember { mutableStateListOf<Contacts>() }
     var showEditDialog by remember { mutableStateOf(false) }
+    var showAddDialog by remember { mutableStateOf(false) }
     var selectedContactIndex by remember { mutableStateOf(-1) }
     var contactName by remember { mutableStateOf("") }
     var accountNumber by remember { mutableStateOf("") }
     val scaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-
+    val favouriteList by viewModel.favoritesList.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.getFavorite()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -155,15 +165,15 @@ fun FavoriteContactsScreen(navController: NavController) {
                             )
                         }
 
-                        contacts.forEachIndexed { index, contact ->
+                        favouriteList.forEachIndexed { index, fav ->
 
                             ContactCard(
 
-                                contact = contact,
+                                favos = fav,
                                 onEditClick = {
                                     selectedContactIndex = index
-                                    contactName = contact.name
-                                    accountNumber = contact.accountNumber
+                                    contactName = fav.recipientName
+                                    accountNumber = fav.recipientAccountNumber
                                     showEditDialog = true
                                     coroutineScope.launch {
                                         scaffoldState.bottomSheetState.expand()
@@ -171,7 +181,7 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 },
 
                                 onDeleteClick = {
-                                    contacts.removeAt(index)
+                                    viewModel.deleteFavorite(FavDelReq(fav.recipientAccountNumber))
                                 }
                             )
                         }
@@ -188,22 +198,23 @@ fun FavoriteContactsScreen(navController: NavController) {
                                 containerColor = P300
                             ),
                             onClick = {
-                                selectedContactIndex = -1
                                 contactName = ""
                                 accountNumber = ""
-                                showEditDialog = true
+                                showAddDialog = true
                                 coroutineScope.launch { scaffoldState.bottomSheetState.expand()
                                 }
                             }) {
-                            Text("Add New Contact")
+                            Text("Add")
                         }
 
-                        if (showEditDialog) {
+                        if (showEditDialog || showAddDialog) {
+
                             ModalBottomSheet(
                                 modifier = Modifier.fillMaxHeight(),
                                 sheetState = sheetState,
                                 onDismissRequest = {
                                     showEditDialog = false
+                                    showAddDialog = false
                                 }
                             ) {
                                 Column(
@@ -222,11 +233,18 @@ fun FavoriteContactsScreen(navController: NavController) {
                                             contentDescription = null,
                                             modifier = Modifier.size(24.dp),
                                         )
-                                        Text(
-                                            text = "Edit",
-                                            fontSize = 18.sp,
-                                            color = P300
-                                        )
+                                        if (showEditDialog){
+                                            Text(
+                                                text = " Edit",
+                                                fontSize = 18.sp,
+                                                color = P300
+                                            )}
+                                        else {
+                                            Text(
+                                                text = " Add",
+                                                fontSize = 18.sp,
+                                                color = P300
+                                            )}
                                     }
 
                                     Spacer(modifier = Modifier.height(20.dp))
@@ -263,20 +281,9 @@ fun FavoriteContactsScreen(navController: NavController) {
                                             containerColor = P300
                                         ),
                                         onClick = {
-                                            if (selectedContactIndex >= 0) {
-
-                                                contacts[selectedContactIndex] =
-                                                    Contacts(contactName, accountNumber)
-
-                                            } else {
-                                                contacts.add(
-                                                    Contacts(
-                                                        contactName,
-                                                        accountNumber
-                                                    )
-                                                )
-                                            }
+                                            viewModel.addFavorite(FavReq(contactName, accountNumber))
                                             showEditDialog = false
+                                            showAddDialog = false
                                             coroutineScope.launch {}
                                         }
                                     )

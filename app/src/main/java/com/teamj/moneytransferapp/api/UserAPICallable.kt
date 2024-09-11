@@ -10,8 +10,12 @@ import com.teamj.moneytransferapp.api.model.User
 import com.teamj.moneytransferapp.api.model.UserData
 import com.teamj.moneytransferapp.api.model.UserLogin
 import com.teamj.moneytransferapp.api.model.UserLoginResp
+import com.teamj.moneytransferapp.favorites.FavDelReq
+import com.teamj.moneytransferapp.favorites.FavReq
+import com.teamj.moneytransferapp.favorites.FavResp
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -57,4 +61,18 @@ interface UserAPICallable {
     suspend fun getTransactioHistory(
         @Path("accountId") accountId: Int
     ): List<Transaction>
+
+    @POST("/api/v1/favorites/add")
+    suspend fun addFav(
+        @Body details: FavReq
+    ): FavResp
+
+    @GET("/api/v1/favorites")
+    suspend fun getFav(
+    ): List<FavReq>
+
+    @DELETE("/api/v1/favorites/delete")
+    suspend fun deleteFav(
+        @Body details: FavDelReq
+    ): FavResp
 }

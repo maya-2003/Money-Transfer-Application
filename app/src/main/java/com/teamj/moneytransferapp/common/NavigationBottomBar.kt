@@ -104,7 +104,7 @@ fun NavBottomBar(state:Int, navController: NavController, modifier: Modifier=Mod
                     }
                 }
                 IconButton(
-                    onClick = { },
+                    onClick = { navController.navigate(Route.CARD_CURRENCY)},
                     modifier = modifier
                         .weight(1.1f)
                         .clip(RoundedCornerShape(0.dp))

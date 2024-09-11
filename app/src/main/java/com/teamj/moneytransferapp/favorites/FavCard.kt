@@ -19,11 +19,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.favorites.FavReq
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.P50
 
 @Composable
-fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
+fun ContactCard(favos: FavReq, onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +59,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
 
             Column {
                 Text(
-                    text = contact.name,
+                    text = favos.recipientName,
                     fontSize = 16.sp,
                     color = Color.Black,
                 )
@@ -66,7 +67,7 @@ fun ContactCard(contact: Contacts, onEditClick: () -> Unit, onDeleteClick: () ->
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Account xxxx${contact.accountNumber.takeLast(4)}",
+                    text = "Account ${favos.recipientAccountNumber}",
                     fontSize = 16.sp,
                     color = G100
                 )
