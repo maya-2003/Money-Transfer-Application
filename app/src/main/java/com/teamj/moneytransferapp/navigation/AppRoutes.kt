@@ -2,9 +2,6 @@ package com.teamj.moneytransferapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,7 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.maya.moneytransferapp.FavoriteContactsScreen
 import com.teamj.moneytransferapp.cards.AddCardScreen
@@ -22,7 +18,7 @@ import com.teamj.moneytransferapp.cards.CardAddedScreen
 import com.teamj.moneytransferapp.cards.CardSplashScreen
 import com.teamj.moneytransferapp.signup.CompleteProfileScreen
 import com.teamj.moneytransferapp.cards.OTPScreenBar
-import com.teamj.moneytransferapp.corefun.AlertDialog
+import com.teamj.moneytransferapp.corefun.TouchAlertDialog
 import com.teamj.moneytransferapp.error.ErrorScreen
 import com.teamj.moneytransferapp.home.HomeScreen
 import com.teamj.moneytransferapp.more.ChangePasswordScreen
@@ -74,17 +70,16 @@ object  Route{
 }
 @Composable
 fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit, modifier: Modifier = Modifier){
-    NavHost(navController = navController, startDestination = Route.TRANSFER_PH1) {
 
     val isConnected = rememberConnectivityState().value
     var connectionCheck by remember { mutableStateOf(false) }
 
-    AlertDialog(navController = navController)
+//    TouchAlertDialog(navController = navController)
 
     LaunchedEffect(isConnected) {
 
         connectionCheck = true
-        delay(2500)
+        delay(2000)
         if (isConnected) {
 
             navController.navigate(Route.LOGIN)
@@ -94,6 +89,10 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
             navController.navigate(Route.NO_WIFI)
         }
     }
+
+    NavHost(navController = navController, startDestination = Route.SPLASH) {
+
+
         composable(route = Route.ADD_CARD) { AddCardScreen(navController) }
         composable(route = Route.CARD_SPLASH) { CardSplashScreen(navController) }
         composable(route = Route.CARD_OTP) { OTPScreenBar(navController) }
@@ -146,7 +145,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
             TransferPaymentScreen(amount, toName, toNumber,fromName,fromNumber, navController = navController)
         }
         //composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
-        composable(route = Route.LOGIN){ SignInScreen() }
+        composable(route = Route.LOGIN){ SignInScreen(navController) }
         //composable(route = Route.TRANSACTION){ SuccessfulTransactionScreen(navController) }
         composable(
             route = "${Route.TRANSACTION}/{amount}/{recpName}/{recpNumber}/{fromName}/{fromNumber}/{date}/{type}",

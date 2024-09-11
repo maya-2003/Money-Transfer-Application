@@ -1,9 +1,11 @@
-package com.teamj.moneytransferapp.model
+package com.teamj.moneytransferapp.api.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamj.moneytransferapp.api.UserAPIService
+import com.teamj.moneytransferapp.model.FavDelReq
+import com.teamj.moneytransferapp.model.FavReq
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

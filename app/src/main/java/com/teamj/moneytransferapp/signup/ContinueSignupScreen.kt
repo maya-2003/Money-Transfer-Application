@@ -200,6 +200,7 @@ fun CountryPicker(name: String, email: String, password: String,navController: N
                         email = email,
                         password = password,
                         dateOfBirth = dob))
+                    navController.navigate(Route.LOGIN)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

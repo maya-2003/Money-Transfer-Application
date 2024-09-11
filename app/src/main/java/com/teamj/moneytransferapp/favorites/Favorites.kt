@@ -56,8 +56,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.api.viewmodels.FavoritesViewModel
 import com.teamj.moneytransferapp.model.FavReq
-import com.teamj.moneytransferapp.model.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
@@ -333,8 +333,6 @@ fun FavoriteContactsScreen(
         )
     }
 }
-
-
 
 @Preview(showSystemUi = false, showBackground = false)
 @Composable

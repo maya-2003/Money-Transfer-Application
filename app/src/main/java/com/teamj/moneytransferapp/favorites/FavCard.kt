@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.model.FavDelReq
 import com.teamj.moneytransferapp.model.FavReq
-import com.teamj.moneytransferapp.model.FavoritesViewModel
+import com.teamj.moneytransferapp.api.viewmodels.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.P50
 

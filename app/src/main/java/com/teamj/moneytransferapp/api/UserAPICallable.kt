@@ -1,5 +1,18 @@
 package com.teamj.moneytransferapp.api
 
+import com.teamj.moneytransferapp.api.model.Password
+import com.teamj.moneytransferapp.api.model.RegisterResponse
+import com.teamj.moneytransferapp.api.model.Transaction
+import com.teamj.moneytransferapp.api.model.Transfer
+import com.teamj.moneytransferapp.api.model.TransferResp
+import com.teamj.moneytransferapp.api.model.UpdatedDetails
+import com.teamj.moneytransferapp.api.model.User
+import com.teamj.moneytransferapp.api.model.UserData
+import com.teamj.moneytransferapp.api.model.UserLogin
+import com.teamj.moneytransferapp.api.model.UserLoginResp
+import com.teamj.moneytransferapp.model.FavDelReq
+import com.teamj.moneytransferapp.model.FavReq
+import com.teamj.moneytransferapp.model.FavResp
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

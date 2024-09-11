@@ -27,7 +27,7 @@ import com.teamj.moneytransferapp.ui.theme.G900
 
 
 @Composable
-fun ErrorAlertDialog(emessage: String, isDialogVisible: Boolean) {
+fun TouchAlertDialog(emessage: String, isDialogVisible: Boolean) {
 
     var isDialogVisible by remember { mutableStateOf(true) }
     var errorMessage = remember {mutableStateOf( emessage)}

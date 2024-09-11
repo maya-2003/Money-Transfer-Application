@@ -31,19 +31,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.ui.theme.D300
 import com.teamj.moneytransferapp.ui.theme.FieldStyle
@@ -53,13 +47,16 @@ import com.teamj.moneytransferapp.ui.theme.G70
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.P900
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.MainActivity
 import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
-import okhttp3.Route
+import com.teamj.moneytransferapp.navigation.Route
+
 
 
 @Composable
-fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
+fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
     val context= LocalContext.current
     val activity = context as? MainActivity
     Box(
@@ -71,7 +68,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                 )
             ),
     )
-         {
+    {
 
         Column(
             modifier = Modifier
@@ -79,23 +76,16 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
-            ) {
-                Row (
-                 modifier = modifier
+        ) {
+            Row (
+                modifier = modifier
                     .padding(top = 32.dp)
-                ){
+            ){
                 Text(
                     text = "Sign In",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        lineHeight = 30.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_bold)),
-                        fontWeight = FontWeight(500),
-                        color = Color(0xFF24221E),
-
-                        textAlign = TextAlign.Center,
-                    )
-
+                    fontSize = 24.sp,
+                    modifier = modifier
+                        .padding(top = 24.dp)
                 )
 
             }
@@ -105,14 +95,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
 
             Text(
                 text = "Speedo Transfer",
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium)),
-                    fontWeight = FontWeight(600),
-                    color = Color(0xFF24221E),
-
-                    textAlign = TextAlign.Center,
-                )
+                fontSize = 30.sp
             )
 
             Spacer(modifier = Modifier.height(36.dp))
@@ -121,12 +104,12 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
             val password = remember { mutableStateOf("") }
             val passwordVisibility = remember { mutableStateOf(false) }
 
-                Text(
-                    text = "Email",
-                    fontSize = 18.sp,
-                    modifier = modifier
-                        .align(Alignment.Start)
-                )
+            Text(
+                text = "Email",
+                fontSize = 18.sp,
+                modifier = modifier
+                    .align(Alignment.Start)
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -135,9 +118,9 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                 onValueChange = { email.value = it },
                 placeholder = {
                     Text(
-                    text = "Enter your email address",
-                    fontSize = 16.sp,
-                    style = FieldStyle
+                        text = "Enter your email address",
+                        fontSize = 16.sp,
+                        style = FieldStyle
                     ) },
 
                 shape = RoundedCornerShape(8.dp),
@@ -151,7 +134,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                     contentDescription = "email",
                     modifier = modifier
                         .size(24.dp)
-                    ) },
+                ) },
 
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = G10,
@@ -194,7 +177,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                             contentDescription = null,
                             modifier = modifier
                                 .size(24.dp)
-                       )
+                        )
                     } },
                 shape = RoundedCornerShape(8.dp),
 
@@ -229,6 +212,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                             viewModel.loginUser(context, email.value, password.value) { token, id ->
                                 activity?.storePrefs(token, id)
                             }
+                            navController.navigate(Route.HOME)
                         }
                     }
                 },
@@ -258,9 +242,7 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
                         .padding(top = 15.dp)
                 )
 
-                TextButton(onClick = {
-                    navController.navigate(Route.SIGNUP)
-                }) {
+                TextButton(onClick = { /* TODO */ }) {
                     Text(
                         text = "Sign Up",
                         fontSize = 16.sp,
@@ -275,7 +257,6 @@ fun SignInScreen(navController: NavController, modifier: Modifier = Modifier, vi
 
 
 
-
 fun validateData(password:String,email:String): Int {
     val state = if(email.isBlank()||password.isBlank()) 0
     else 1
@@ -286,5 +267,5 @@ fun validateData(password:String,email:String): Int {
 @Composable
 @Preview(showBackground = true)
 fun SignInfun(){
-    SignInScreen()
+    SignInScreen(rememberNavController())
 }
