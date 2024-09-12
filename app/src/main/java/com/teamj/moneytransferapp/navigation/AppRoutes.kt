@@ -29,6 +29,7 @@ import com.teamj.moneytransferapp.more.SettingsScreen
 import com.teamj.moneytransferapp.nowifi.InternetErrorScreen
 import com.teamj.moneytransferapp.onboarding.Onboarding
 import com.teamj.moneytransferapp.corefun.rememberConnectivityState
+import com.teamj.moneytransferapp.corefun.startInactivityTimer
 import com.teamj.moneytransferapp.signin.SignInScreen
 import com.teamj.moneytransferapp.signup.SignupScreen
 import com.teamj.moneytransferapp.splash.SplashScreen
@@ -73,18 +74,17 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
     val isConnected = rememberConnectivityState().value
     var connectionCheck by remember { mutableStateOf(false) }
 
-//    TouchAlertDialog(navController = navController)
+
+    startInactivityTimer(navController = navController)
+
 
     LaunchedEffect(isConnected) {
 
         connectionCheck = true
-        delay(2000)
+        delay(1900)
         if (isConnected) {
-
             navController.navigate(Route.LOGIN)
-
         } else{
-
             navController.navigate(Route.NO_WIFI)
         }
     }

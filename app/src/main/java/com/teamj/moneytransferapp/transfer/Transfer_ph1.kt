@@ -97,14 +97,18 @@ fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modi
             ) {
 
                 Spacer(modifier = modifier.height(20.dp))
+
                 TransferProgress(1)
+
                 Spacer(modifier = modifier.height(20.dp))
+
                 TransferAmountInfo(navController)
             }
         }
     }
 
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -405,7 +409,6 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier = Modifi
                     onDismissRequest = { showEditDialog = false }
                 ) {
 
-                    contacts.forEachIndexed { index, contact ->
 
                         Card(
                             modifier = Modifier
@@ -414,17 +417,17 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier = Modifi
                                 .background(color = P50),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            FavoritePicker(
-                                name = contact.name,
-                                account = contact.accountNumber,
-                                onFavoriteClick = {
-                                    rec_name = contact.name
-                                    rec_account = contact.accountNumber
-                                    showDialog = false
-                                }
-                            )
+//                            FavoritePicker(
+//                                name = contact.name,
+//                                account = contact.accountNumber,
+//                                onFavoriteClick = {
+//                                    rec_name = contact.name
+//                                    rec_account = contact.accountNumber
+//                                    showDialog = false
+//                                }
+//                            )
 
-                        }
+
                     }
                 }
             }

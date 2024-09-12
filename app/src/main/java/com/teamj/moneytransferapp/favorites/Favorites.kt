@@ -57,7 +57,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.api.viewmodels.FavoritesViewModel
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.model.FavReq
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.P300
 import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
@@ -95,42 +97,7 @@ fun FavoriteContactsScreen(
 
         Scaffold(
 
-            topBar = {
-
-                TopAppBar(
-
-                    title = {
-                        Text(
-                            text = "Favourite",
-                            modifier = Modifier
-                                .padding(start = 88.dp),
-                            style = TextStyle(
-                                fontSize = 24.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_medium)),
-                                fontWeight = FontWeight(400),
-                                color = Color(0xFF24221E),
-
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.DarkGray
-                    ),
-
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { /* Handle back navigation */ }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                )
-            },
+            topBar = { TopBar("Transfer", Route.MORE, navController) },
 
             content = { innerPadding ->
                 Box(
@@ -226,7 +193,8 @@ fun FavoriteContactsScreen(
                                 coroutineScope.launch {
                                     scaffoldState.bottomSheetState.expand()
                                 }
-                            })
+                            }
+                        )
                         {
                             Text(
                                 "Add New Contact",
@@ -274,6 +242,8 @@ fun FavoriteContactsScreen(
                                     }
                                 }
                             }
+                        }
+
                             Spacer(modifier = Modifier.height(20.dp))
 
                             OutlinedTextField(
@@ -337,7 +307,7 @@ fun FavoriteContactsScreen(
                             }
                         }
                     }
-                }
+
             }
         )
     }
