@@ -73,7 +73,6 @@ class MainActivity : ComponentActivity() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
 
-        NotificationManagerCompat.from(context).notify(99, builder.build())
 
     }
 

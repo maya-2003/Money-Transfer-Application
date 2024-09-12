@@ -224,8 +224,17 @@ fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewMode
                     .padding(1.dp)
             ) {
                 items(transactions.size) { position ->
-                    val transactionType = if (userDetails!!.accounts[0].accountNumber == transactions[position].toAccountNumber) "Received"
-                    else "Sent"
+                    val transactionType = if (
+                        userDetails != null &&
+                        userDetails!!.accounts.isNotEmpty() &&
+                        position < transactions.size &&
+                        userDetails!!.accounts[0].accountNumber == transactions[position].toAccountNumber
+                    ) {
+                        "Received"
+                    } else {
+                        "Sent"
+                    }
+
                     TransactionCard(transactions[position], transactionType)
                     HorizontalDivider(thickness = 1.dp, color = G40)
                 }

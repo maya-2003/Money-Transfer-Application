@@ -72,7 +72,7 @@ fun Onboarding(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         TextButton(
             onClick = {
-                navController.navigate(Route.MORE)
+                navController.navigate(Route.SIGNUP)
                 UserPrefs.setUserOnboarding(context)
             },
             modifier = Modifier
