@@ -23,8 +23,8 @@ class UserDetailsViewModel : ViewModel() {
                 val userId = SessionController.getId(context)
 
                 if (userId != -1) {
-                    val response = UserAPIService.callable.getCustomerById(userId)
-                    _userDetails.value = response
+                    val details = UserAPIService.callable.getCustomerById(userId)
+                    _userDetails.value = details
                 } else {
                     Log.e("error", "id not found")
                 }

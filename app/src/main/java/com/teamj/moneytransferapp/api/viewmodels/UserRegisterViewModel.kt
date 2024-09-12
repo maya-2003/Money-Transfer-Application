@@ -11,9 +11,9 @@ class UserRegisterViewModel : ViewModel() {
     fun registerUser(user: User) {
         viewModelScope.launch {
             try {
-                val response = UserAPIService.callable.registerUser(user)
+                val registerResp = UserAPIService.callable.registerUser(user)
 
-                Log.d("register", "registered ${response.id}")
+                Log.d("register", "registered ${registerResp.id}")
             } catch (e: Exception) {
 
                 Log.e("error", e.toString())

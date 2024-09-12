@@ -14,9 +14,9 @@ class UserLoginViewModel: ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = UserAPIService.callable.loginUser(loginRequest)
-                Log.d("login", "token: ${response.token} id: ${response.id}")
-                storePrefs(response.token, response.id)
+                val loginResp = UserAPIService.callable.loginUser(loginRequest)
+                Log.d("login", "token: ${loginResp.token} id: ${loginResp.id}")
+                storePrefs(loginResp.token, loginResp.id)
 
             } catch (e: Exception) {
                 Log.e("login", e.toString())

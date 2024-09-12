@@ -1,6 +1,5 @@
 package com.teamj.moneytransferapp.api.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamj.moneytransferapp.api.UserAPIService
@@ -23,8 +22,8 @@ class TransferViewModel : ViewModel() {
     fun transferMoney(transferDetails: Transfer) {
         viewModelScope.launch {
             try {
-                val response = UserAPIService.callable.transfer(transferDetails)
-                _transferInfo.value = response
+                val transferResp = UserAPIService.callable.transfer(transferDetails)
+                _transferInfo.value = transferResp
                 _hasError.value = false
                 _transferSuccess.value = true
             } catch (e: Exception) {
