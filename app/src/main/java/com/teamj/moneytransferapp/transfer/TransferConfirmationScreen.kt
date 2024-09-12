@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -125,11 +127,13 @@ fun TransferConfirmationScreen(amount:String, recpName:String, recpNumber:String
 fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navController: NavController,modifier: Modifier = Modifier, viewModel: UserDetailsViewModel= viewModel(), transferViewModel: TransferViewModel = viewModel()) {
     val userDetails by viewModel.userDetails.collectAsState()
     val transferSuccess by transferViewModel.transferSuccess.collectAsState()
-    val errorMessage by transferViewModel.errorMessage.collectAsState()
     var accountName by rememberSaveable { mutableStateOf("name") }
     var accountNumber by rememberSaveable { mutableStateOf("xxx 123") }
     val hasError by transferViewModel.hasError.collectAsState()
     val context = LocalContext.current
+    var returnToScreen by remember { mutableStateOf(false) }
+    var showError by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         viewModel.getUserDetails(context)
     }
@@ -137,9 +141,6 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
         val userData = userDetails!!
         accountName = userData.name
         accountNumber = userData.accounts[0].accountNumber
-    }
-    var currency by rememberSaveable {
-        mutableStateOf("USD")
     }
     LaunchedEffect(transferSuccess) {
         if (transferSuccess) {
@@ -343,14 +344,40 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
             }
 
         }
-        if (hasError) {
-            Text(
-                text = "Transaction not successful",
-                color = P300,
-                modifier = modifier.padding(8.dp),
-                fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
-                fontSize = 14.sp
+        LaunchedEffect(hasError) {
+            showError = hasError
+        }
+        if (showError) {
+            AlertDialog(
+                icon = {
+                    Icon(painterResource(id = R.drawable.ic_error), contentDescription = "error Icon")
+                },
+                title = {
+                    Text(text = "Transaction not successful")
+                },
+                text = {
+                    Text(text = "Sorry, your transaction was not successful")
+                },
+                onDismissRequest = {
+                    showError = false
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showError = false
+                            returnToScreen = true
+                        }
+                    ) {
+                        Text("Dismiss")
+                    }
+                },
             )
+        }
+        LaunchedEffect(returnToScreen) {
+            if (returnToScreen) {
+                navController.navigate(Route.TRANSFER_PH1)
+                returnToScreen = false
+            }
         }
         Spacer(modifier = modifier.height(50.dp))
         Button(
