@@ -244,11 +244,9 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
 
     LaunchedEffect(isConnected) {
 
-        connectionCheck = true
-        delay(1900)
-        if (isConnected) {
-            navController.navigate(Route.LOGIN)
-        } else{
+        connectionCheck = false
+        delay(2000)
+        if (!isConnected) {
             navController.navigate(Route.NO_WIFI)
         }
     }

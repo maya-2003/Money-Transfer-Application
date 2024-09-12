@@ -59,7 +59,7 @@ fun AddCardScreen(navController: NavController,modifier: Modifier = Modifier) {
         topBar = {
             CenterAlignedTopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = {navController.navigate(Route.SIGNUP)
+                    IconButton(onClick = {navController.navigate(Route.HOME)
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back_arrow),

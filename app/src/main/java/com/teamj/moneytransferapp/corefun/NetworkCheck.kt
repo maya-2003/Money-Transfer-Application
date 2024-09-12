@@ -24,10 +24,6 @@ fun rememberConnectivityState(): State<Boolean> {
         val networkCallBack = object : ConnectivityManager.NetworkCallback() {
 
 
-            override fun onUnavailable() {
-
-                connectionState.value = false
-            }
             override fun onLost(network: Network) {
                 connectionState.value = false
             }

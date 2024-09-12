@@ -89,8 +89,8 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
 
         }
     }
-
 }
+
 @Composable
 fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewModel= viewModel(), transViewModel: TransactionsViewModel = viewModel()) {
 
