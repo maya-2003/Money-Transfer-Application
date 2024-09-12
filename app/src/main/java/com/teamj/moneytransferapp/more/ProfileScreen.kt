@@ -164,11 +164,11 @@ fun ProfileItems(navController: NavController,profileItems:List<ProfileItem>,mod
 
 @Composable
 fun ProfileListItem(navController: NavController,profileItem:ProfileItem, modifier: Modifier=Modifier){
-    Card(onClick = { /*TODO*/ },
+    Card(onClick = { navController.navigate(profileItem.destination) },
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)) {
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),) {
         Row (modifier = modifier
             .fillMaxWidth()){
             Box(

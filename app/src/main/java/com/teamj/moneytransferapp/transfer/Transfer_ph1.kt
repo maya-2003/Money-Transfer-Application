@@ -37,6 +37,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +67,7 @@ import com.teamj.moneytransferapp.common.TransferProgress
 import com.teamj.moneytransferapp.model.Contacts
 import com.teamj.moneytransferapp.navigation.Route
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.api.viewmodels.FavoritesViewModel
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.P300
@@ -112,15 +115,21 @@ fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier) {
+fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier, viewModel: FavoritesViewModel= viewModel()) {
     var showEditDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val contacts = remember { mutableStateListOf<Contacts>() }
+    var showDialog by remember { mutableStateOf(false) }
 
 
     var money by remember { mutableStateOf("") }
     var rec_name by remember { mutableStateOf("") }
     var rec_account by remember { mutableStateOf("") }
+    val favouriteList by viewModel.favoritesList.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.getFavorite()
+    }
+
 
     Box(
         modifier = Modifier
@@ -402,84 +411,31 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
             }
 Spacer(modifier = modifier.height(16.dp))
             if (showEditDialog) {
+
                 ModalBottomSheet(
                     modifier = Modifier.fillMaxHeight(),
                     sheetState = sheetState,
-                    onDismissRequest = {
-                        showEditDialog = false
-                    }
+                    onDismissRequest = { showEditDialog = false }
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .background(color = Color.Transparent),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
 
-                        ModalBottomSheet(
-                            modifier = Modifier.fillMaxHeight(),
-                            sheetState = sheetState,
-                            onDismissRequest = { showEditDialog = false }
+                    favouriteList.forEachIndexed { index, favos ->
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            shape = RoundedCornerShape(8.dp)
                         ) {
-
-                            contacts.forEachIndexed { index, contact ->
-
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp)
-                                        .background(color = P50),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-
-                                    Row(
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .background(Color.Transparent)
-                                            .padding(16.dp),
-
-                                        ) {
-
-                                        Column(
-                                            modifier = Modifier
-                                                .padding(5.dp)
-                                                .background(Color.Transparent)
-                                        ) {
-                                            Image(
-                                                painter = painterResource(id = R.drawable.card_logo),
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .size(55.dp)
-                                            )
-                                        }
-
-
-                                        Spacer(modifier = Modifier.width(8.dp))
-
-                                        Column {
-                                            Text(
-                                                text = contact.name,
-                                                fontSize = 16.sp,
-                                                color = Color.Black,
-                                            )
-
-                                            Spacer(modifier = Modifier.height(8.dp))
-
-                                            Text(
-                                                text = "Account xxxx${
-                                                    contact.accountNumber.takeLast(
-                                                        4
-                                                    )
-                                                }",
-                                                fontSize = 16.sp,
-                                                color = G100
-                                            )
-                                        }
-                                    }
-
+                            FavoritePicker(
+                                name = favos.recipientName,
+                                account = favos.recipientAccountNumber,
+                                onFavoriteClick = {
+                                    rec_name = favos.recipientName
+                                    rec_account = favos.recipientAccountNumber
+                                    showDialog = false
                                 }
-                            }
+                            )
+
                         }
                     }
                 }
@@ -489,6 +445,113 @@ Spacer(modifier = modifier.height(16.dp))
 
 }
 
+@Composable
+fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit, viewModel: FavoritesViewModel = viewModel()) {
+
+    val favouriteList by viewModel.favoritesList.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.getFavorite()
+    }
+
+
+    Row(
+
+        verticalAlignment = Alignment.CenterVertically,
+
+        modifier = Modifier
+
+            .fillMaxWidth()
+
+            .clickable { onFavoriteClick() }
+
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+
+            .background(
+
+                Color(0xFFF3E9EB), shape = RoundedCornerShape(16.dp)
+
+            )
+
+
+    ) {
+
+        Row(
+
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+            modifier = Modifier
+
+                .fillMaxWidth()
+
+                .padding(16.dp),
+
+
+            ) {
+
+
+            Column(
+
+                modifier = Modifier
+
+                    .padding(5.dp)
+
+            ) {
+
+                Image(
+
+                    painter = painterResource(id = R.drawable.card_logo),
+
+                    contentDescription = null,
+
+                    modifier = Modifier
+
+                        .size(55.dp)
+
+                )
+
+            }
+
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+
+
+            favouriteList.forEachIndexed { index, favos ->
+
+
+                Column {
+
+                    Text(
+
+                        text = favos.recipientName,
+
+                        fontSize = 16.sp,
+
+                        color = Color.Black,
+
+                        )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+
+                        text = "Account xxxx${favos.recipientAccountNumber.takeLast(4)}",
+
+                        fontSize = 16.sp,
+
+                        color = G100
+
+                    )
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
 
 
 @Preview(showBackground = true)

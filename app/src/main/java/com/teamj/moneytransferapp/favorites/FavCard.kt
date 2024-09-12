@@ -67,7 +67,7 @@ fun ContactCard(favos: FavReq, onEditClick: () -> Unit, onDeleteClick: () -> Uni
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Account ${favos.recipientAccountNumber}",
+                    text = "Account xxxx${favos.recipientAccountNumber.takeLast(4)}",
                     fontSize = 16.sp,
                     color = G100
                 )

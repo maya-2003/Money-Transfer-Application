@@ -105,7 +105,7 @@ fun SettingsList(settingsList:List<SettingsItem>,navController: NavController,mo
 
 @Composable
 fun SettingsListItem(navController: NavController, settingsItem: SettingsItem, modifier: Modifier=Modifier){
-    Card(onClick = { /*TODO*/ },
+    Card(onClick = { navController.navigate(settingsItem.route) },
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),

@@ -57,8 +57,10 @@ import com.teamj.moneytransferapp.ui.theme.RedGrad
 import com.teamj.moneytransferapp.ui.theme.YellowGrad
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.favorites.FavDelReq
 import com.teamj.moneytransferapp.favorites.FavReq
+import com.teamj.moneytransferapp.navigation.Route
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,32 +96,7 @@ fun FavoriteContactsScreen(navController: NavController, viewModel: FavoritesVie
         Scaffold(
 
             topBar = {
-
-                TopAppBar(
-
-                    title = {
-                        Text(
-                            text = "Favourite",
-                            modifier = Modifier
-                                .padding(start = 100.dp)
-                        )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.DarkGray
-                    ),
-
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { /* Handle back navigation */ }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                )
+                TopBar(title = "Favourites", route = Route.PROFILE, navController =navController )
             },
 
             content = { innerPadding ->

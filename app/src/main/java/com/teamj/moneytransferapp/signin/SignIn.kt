@@ -241,7 +241,7 @@ fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, vie
                         .padding(top = 15.dp)
                 )
 
-                TextButton(onClick = { /* TODO */ }) {
+                TextButton(onClick = {navController.navigate(Route.SIGNUP)}) {
                     Text(
                         text = "Sign Up",
                         fontSize = 16.sp,

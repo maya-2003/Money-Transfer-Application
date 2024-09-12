@@ -124,8 +124,11 @@ fun TransferConfirmationScreen(amount:String, recpName:String, recpNumber:String
 @Composable
 fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navController: NavController,modifier: Modifier = Modifier, viewModel: UserDetailsViewModel= viewModel(), transferViewModel: TransferViewModel = viewModel()) {
     val userDetails by viewModel.userDetails.collectAsState()
+    val transferSuccess by transferViewModel.transferSuccess.collectAsState()
+    val errorMessage by transferViewModel.errorMessage.collectAsState()
     var accountName by rememberSaveable { mutableStateOf("name") }
     var accountNumber by rememberSaveable { mutableStateOf("xxx 123") }
+    val hasError by transferViewModel.hasError.collectAsState()
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.getUserDetails(context)
@@ -137,6 +140,11 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
     }
     var currency by rememberSaveable {
         mutableStateOf("USD")
+    }
+    LaunchedEffect(transferSuccess) {
+        if (transferSuccess) {
+            navController.navigate("${Route.TRANSFER_PAYMENT}/$amount/$recpName/$recpNumber/$accountName/$accountNumber")
+        }
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -335,13 +343,22 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
             }
 
         }
+        if (hasError) {
+            Text(
+                text = "Transaction not successful",
+                color = P300,
+                modifier = modifier.padding(8.dp),
+                fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
+                fontSize = 14.sp
+            )
+        }
         Spacer(modifier = modifier.height(50.dp))
         Button(
             onClick = {
                 transferViewModel.transferMoney(Transfer(recpNumber,amount.toInt(),recpName) )
                 //navController.navigate(Route.TRANSFER_PAYMENT)
-                navController.navigate("${Route.TRANSFER_PAYMENT}/$amount/$recpName/$recpNumber/$accountName/$accountNumber")
-                      },
+               // navController.navigate("${Route.TRANSFER_PAYMENT}/$amount/$recpName/$recpNumber/$accountName/$accountNumber")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(54.dp),

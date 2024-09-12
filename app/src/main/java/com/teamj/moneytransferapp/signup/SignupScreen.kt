@@ -3,8 +3,10 @@ package com.teamj.moneytransferapp.signup
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,6 +58,7 @@ import com.teamj.moneytransferapp.ui.theme.FieldStyle
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G10
 import com.teamj.moneytransferapp.ui.theme.G100
+import com.teamj.moneytransferapp.ui.theme.G70
 import com.teamj.moneytransferapp.ui.theme.G900
 import com.teamj.moneytransferapp.ui.theme.LabelStyle
 import com.teamj.moneytransferapp.ui.theme.P300
@@ -447,33 +450,27 @@ fun SignupScreen(navController: NavController, modifier: Modifier = Modifier) {
                 )
             }
 
-
-            TextButton(onClick = { }) {
-                Text(
-                    buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                color = G100,
-                                fontSize = 16.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_medium))
-                            )
-                        ) {
-                            append("Already have an account? ")
-                        }
-
-
-                        withStyle(
-                            style = SpanStyle(
-                                color = P300,
-                                textDecoration = TextDecoration.Underline,
-                                fontFamily = FontFamily(Font(R.font.inter_medium)),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append("Sign In")
-                        }
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(text = "Already have an account? ",
+                    color = G100,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                    modifier = modifier
+                        .padding(top = 15.dp)
                 )
+
+                TextButton(onClick = {navController.navigate(Route.LOGIN)}) {
+                    Text(
+                        text = "Sign In",
+                        color = P300,
+                        textDecoration = TextDecoration.Underline,
+                        fontFamily = FontFamily(Font(R.font.inter_medium)),
+                        fontSize = 16.sp
+                    )
+                }
             }
 
 

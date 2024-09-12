@@ -40,14 +40,16 @@ class DataSource {
             ProfileItem(
                 R.drawable.ic_history,
                 R.string.payment_history,
-                R.string.payment_history_description
+                R.string.payment_history_description,
+                Route.LAST_TRANSACTIONS
             )
         )
         profileItems.add(
             ProfileItem(
                 R.drawable.ic_star,
                 R.string.favourite_list,
-                R.string.favourite_list_description
+                R.string.favourite_list_description,
+                Route.FAVORITES
             )
         )
         return profileItems
@@ -76,7 +78,7 @@ class DataSource {
     fun getMoreOptions(): List<MoreItem> {
         val options = mutableListOf<MoreItem>()
         options.add(MoreItem(R.string.transfer, R.drawable.ic_website))
-        options.add(MoreItem(R.string.favourites, R.drawable.ic_star))
+        options.add(MoreItem(R.string.favourites, R.drawable.ic_star,Route.FAVORITES))
         options.add(MoreItem(R.string.profile, R.drawable.ic_user, Route.PROFILE))
         options.add(MoreItem(R.string.help, R.drawable.ic_error))
         options.add(MoreItem(R.string.logout, R.drawable.ic_logout))
