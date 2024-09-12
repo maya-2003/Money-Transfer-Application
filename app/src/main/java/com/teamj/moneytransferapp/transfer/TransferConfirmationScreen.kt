@@ -158,7 +158,7 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
             modifier = modifier.fillMaxWidth()
         ) {
             Text(
-                text = "$amount $currency",
+                text = "$amount EGP",
                 color = G900,
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(R.font.inter_semi_bold))

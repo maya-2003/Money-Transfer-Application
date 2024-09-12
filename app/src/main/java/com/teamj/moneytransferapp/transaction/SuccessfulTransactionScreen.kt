@@ -132,7 +132,7 @@ fun TransactionInformation(amount : Int, recpName : String, recpNumber : String,
                         fontSize = 28.sp,
                     )
                 ) {
-                    append(" USD")
+                    append(" EGP")
                 }
             }
         )
