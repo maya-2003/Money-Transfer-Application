@@ -356,8 +356,6 @@ fun TransferConfirmation(amount:String, recpName:String, recpNumber:String,navCo
         Button(
             onClick = {
                 transferViewModel.transferMoney(Transfer(recpNumber,amount.toInt(),recpName) )
-                //navController.navigate(Route.TRANSFER_PAYMENT)
-               // navController.navigate("${Route.TRANSFER_PAYMENT}/$amount/$recpName/$recpNumber/$accountName/$accountNumber")
             },
             modifier = Modifier
                 .fillMaxWidth()

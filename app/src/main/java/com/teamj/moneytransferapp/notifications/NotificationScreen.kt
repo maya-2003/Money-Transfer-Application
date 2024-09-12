@@ -307,10 +307,3 @@ fun NotificationItem(amount: Int,  name:String,  account:String,  date: String, 
     }
     
 }
-
-//@Preview(showSystemUi = false)
-//@Composable
-//fun NotificationsScreenPreview(modifier: Modifier = Modifier) {
-//    NotificationsScreen(rememberNavController())
-//
-//}

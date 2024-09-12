@@ -13,13 +13,13 @@ class EditDetailsViewModel : ViewModel() {
     fun updateDetails(context : Context,details: UpdatedDetails) {
         viewModelScope.launch {
             try {
-                val userId = SessionController.getUserId(context)
-                val response = UserAPIService.callable.updateUserInfo(userId,details)
+                val id = SessionController.getId(context)
+                val details = UserAPIService.callable.updateUserInfo(id,details)
 
-                Log.d("RegisterSuccess", "User registered with ID: ${response.id}")
+                Log.d("update", "${details.id}")
             } catch (e: Exception) {
 
-                Log.e("RegisterError", e.toString())
+                Log.e("error", e.toString())
             }
         }
     }

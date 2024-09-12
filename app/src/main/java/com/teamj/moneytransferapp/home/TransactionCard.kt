@@ -111,7 +111,7 @@ fun TransactionCard(transaction: Transaction, type : String) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = "$${amount}",
+                    text = "${amount} EGP",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 24.sp,

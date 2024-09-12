@@ -13,10 +13,10 @@ class UserRegisterViewModel : ViewModel() {
             try {
                 val response = UserAPIService.callable.registerUser(user)
 
-                Log.d("RegisterSuccess", "User registered with ID: ${response.id}")
+                Log.d("register", "registered ${response.id}")
             } catch (e: Exception) {
 
-                Log.e("RegisterError", e.toString())
+                Log.e("error", e.toString())
             }
         }
     }

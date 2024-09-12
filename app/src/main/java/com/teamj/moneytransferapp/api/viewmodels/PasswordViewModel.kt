@@ -14,17 +14,17 @@ class PasswordViewModel : ViewModel(){
 
         viewModelScope.launch {
             try {
-                val userId = SessionController.getUserId(context)
-                val response = UserAPIService.callable.updateUserPassword(userId,password)
+                val userId = SessionController.getId(context)
+                val change = UserAPIService.callable.updateUserPassword(userId,password)
 
-                if (response.isSuccessful) {
-                    Log.d("ChangePassword", "Password successfully changed")
+                if (change.isSuccessful) {
+                    Log.d("password", "success")
                 } else {
-                    Log.e("ChangePasswordError", "Failed to change password. Status code: ${response.code()}")
+                    Log.e("password", "failed")
                 }
             } catch (e: Exception) {
 
-                Log.e("RegisterError", e.toString())
+                Log.e("error", e.toString())
             }
         }
     }

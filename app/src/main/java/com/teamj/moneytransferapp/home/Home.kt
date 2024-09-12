@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -61,6 +62,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teamj.moneytransferapp.api.model.Transaction
 import com.teamj.moneytransferapp.api.viewmodels.TransactionsViewModel
 import com.teamj.moneytransferapp.api.viewmodels.UserDetailsViewModel
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.transaction.TransactionItem
 
 
@@ -83,7 +85,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
                 )
                 .padding(innerPadding)
         ) {
-            HomeItems()
+            HomeItems(navController)
 
 
 
@@ -92,7 +94,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewModel= viewModel(), transViewModel: TransactionsViewModel = viewModel()) {
+fun HomeItems(navController: NavController, modifier: Modifier = Modifier, userViewModel : UserDetailsViewModel= viewModel(), transViewModel: TransactionsViewModel = viewModel()) {
 
     val context = LocalContext.current
     val transactions by transViewModel.transactions.collectAsState(initial = emptyList())
@@ -161,7 +163,7 @@ fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewMode
 
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { /*TODO*/ },
+                IconButton(onClick = { navController.navigate(Route.NOTIFICATIONS) },
                     modifier=modifier.size(25.dp)) {
                     Icon(painter = painterResource(id = R.drawable.ic_notifications), contentDescription = "notifications icon")
                     
@@ -207,12 +209,15 @@ fun HomeItems(modifier: Modifier = Modifier, userViewModel : UserDetailsViewMode
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.inter_medium))
                 )
-                Text(
-                    text = "View all",
-                    color = G200,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_medium))
-                )
+
+                TextButton(onClick = { navController.navigate(Route.LAST_TRANSACTIONS) }) {
+                    Text(
+                        text = "View all",
+                        color = G200,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_medium))
+                    )
+                }
 
             }
 

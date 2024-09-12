@@ -23,7 +23,7 @@ class NotificationViewModel(application: Application) : AndroidViewModel(applica
     fun getTransactions(context: Context) {
         viewModelScope.launch {
             try {
-                val userId = SessionController.getUserId(context)
+                val userId = SessionController.getId(context)
                 val response = UserAPIService.callable.getTransactioHistory(userId)
 
                 addLastTransaction(context, response)

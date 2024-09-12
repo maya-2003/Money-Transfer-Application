@@ -85,24 +85,6 @@ fun TransactionsScreen(navController: NavController, modifier: Modifier = Modifi
 
 }
 
-//@Composable
-//fun TransactionsList(navController: NavController,modifier: Modifier = Modifier) {
-//    val context = LocalContext.current
-//    Column(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .padding(start = 16.dp, end = 16.dp, top = 20.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally){
-//        Text(text = "Your Last Transactions",
-//            fontSize = 20.sp,
-//            fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
-//            color = G900)
-//        Spacer(modifier = modifier.height(20.dp))
-//        TransactionItem(navController)
-//        Spacer(modifier = modifier.height(12.dp))
-//    }
-//
-//}
 
 
 @Composable
@@ -206,7 +188,7 @@ fun TransactionItem(transaction : Transaction, transactionType:String, navContro
 
 
                     Text(
-                        text = "$${transaction.amount.toString()}",
+                        text = "${transaction.amount.toString()} EGP",
                         color = P300,
                         fontFamily = FontFamily(Font(R.font.inter_semi_bold)),
                         fontSize = 16.sp

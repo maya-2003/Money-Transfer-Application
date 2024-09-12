@@ -15,11 +15,11 @@ class UserLoginViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = UserAPIService.callable.loginUser(loginRequest)
-                Log.d("LoginSuccess", "Token: ${response.token} ID: ${response.id}")
+                Log.d("login", "token: ${response.token} id: ${response.id}")
                 storePrefs(response.token, response.id)
 
             } catch (e: Exception) {
-                Log.e("LoginError", e.toString())
+                Log.e("login", e.toString())
             }
         }
     }

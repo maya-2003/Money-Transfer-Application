@@ -23,11 +23,11 @@ class FavoritesViewModel : ViewModel() {
 
                 val response = UserAPIService.callable.addFav(favReq)
 
-                Log.d("Added Fav", "${response.message}")
+                Log.d("favourite", "${response.message}")
 
             } catch (e: Exception) {
 
-                Log.e("addingError", "${e.message}")
+                Log.e("error", "${e.message}")
 
             }
         }
@@ -39,13 +39,13 @@ class FavoritesViewModel : ViewModel() {
 
             try {
 
-                val response = UserAPIService.callable.getFav()
-                _favoritesList.value = response
-                Log.d("Get Fav", "${response}")
+                val fav = UserAPIService.callable.getFav()
+                _favoritesList.value = fav
+                Log.d("fsvourite", "${fav}")
 
             } catch (e: Exception) {
 
-                Log.e("addingError", "${e.message}")
+                Log.e("error", "${e.message}")
 
             }
         }
@@ -56,13 +56,13 @@ class FavoritesViewModel : ViewModel() {
 
             try {
 
-                val response = UserAPIService.callable.deleteFav(favDelReq)
+                val fav = UserAPIService.callable.deleteFav(favDelReq)
 
-                Log.d("Deleted Fav", "${response.message}")
+                Log.d("fav", "${fav.message}")
 
             } catch (e: Exception) {
 
-                Log.e("addingError", "${e.message}")
+                Log.e("error", "${e.message}")
 
             }
         }

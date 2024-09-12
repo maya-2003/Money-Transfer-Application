@@ -31,6 +31,7 @@ import com.teamj.moneytransferapp.nowifi.InternetErrorScreen
 import com.teamj.moneytransferapp.onboarding.Onboarding
 import com.teamj.moneytransferapp.corefun.rememberConnectivityState
 import com.teamj.moneytransferapp.corefun.startInactivityTimer
+import com.teamj.moneytransferapp.notifications.NotificationsScreen
 import com.teamj.moneytransferapp.signin.SignInScreen
 import com.teamj.moneytransferapp.signup.SignupScreen
 import com.teamj.moneytransferapp.splash.SplashScreen
@@ -109,9 +110,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
             val password = it.arguments?.getString("password")!!
             CompleteProfileScreen(name, email, password, navController = navController)
         }
-        //composable(Route.CONTINUE_SIGNUP) { CompleteProfileScreen(navController) }
         composable(route = Route.TRANSFER_PH1){ TransferAmountScreen(navController) }
-        //composable(route = Route.TRANSFER_CONFIRM){ TransferConfirmationScreen(navController) }
         composable(
             route = "${Route.TRANSFER_CONFIRM}/{amount}/{recpName}/{recpNumber}",
             arguments = listOf(
@@ -142,9 +141,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
             val fromNumber = it.arguments?.getString("fromNumber")!!
             TransferPaymentScreen(amount, toName, toNumber,fromName,fromNumber, navController = navController)
         }
-        //composable(route = Route.TRANSFER_PAYMENT){ TransferPaymentScreen(navController) }
         composable(route = Route.LOGIN){ SignInScreen(navController) }
-        //composable(route = Route.TRANSACTION){ SuccessfulTransactionScreen(navController) }
         composable(
             route = "${Route.TRANSACTION}/{amount}/{recpName}/{recpNumber}/{fromName}/{fromNumber}/{date}/{type}",
             arguments = listOf(
@@ -181,6 +178,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
         composable(route = Route.ONBOARDING){ Onboarding(navController) }
         composable(route = Route.SPLASH){ SplashScreen(navController) }
         composable(route = Route.CARD_CURRENCY){ CardCountriesScreen(navController) }
+        composable(route = Route.NOTIFICATIONS){ NotificationsScreen(onSendNotification,navController) }
 
     }
 }

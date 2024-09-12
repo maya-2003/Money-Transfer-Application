@@ -182,7 +182,6 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
 
             {
                 Column(
-//                    verticalArrangement = Arrangement.spacedBy(30.dp, Alignment.Top),
                     verticalArrangement = Arrangement.SpaceAround,
                     horizontalAlignment = Alignment.Start,
                     modifier = modifier

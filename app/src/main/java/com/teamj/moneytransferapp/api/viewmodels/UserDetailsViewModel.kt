@@ -20,16 +20,16 @@ class UserDetailsViewModel : ViewModel() {
         viewModelScope.launch {
 
             try {
-                val userId = SessionController.getUserId(context)
+                val userId = SessionController.getId(context)
 
                 if (userId != -1) {
                     val response = UserAPIService.callable.getCustomerById(userId)
                     _userDetails.value = response
                 } else {
-                    Log.e("CustomerError", "User ID not found")
+                    Log.e("error", "id not found")
                 }
             } catch (e: Exception) {
-                Log.e("CustomerError", e.toString())
+                Log.e("error", e.toString())
                 _userDetails.value = null
             }
         }

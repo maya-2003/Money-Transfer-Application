@@ -19,13 +19,13 @@ class TransactionsViewModel : ViewModel() {
         viewModelScope.launch {
 
             try {
-                val userId = SessionController.getUserId(context)
+                val id = SessionController.getId(context)
 
-                val response = UserAPIService.callable.getTransactioHistory(userId)
-                _transactions.value = response
+                val transactionResp = UserAPIService.callable.getTransactioHistory(id)
+                _transactions.value = transactionResp
 
             } catch (e: Exception) {
-                Log.e("CustomerError", e.toString())
+                Log.e("error", e.toString())
                 _transactions.value = emptyList()
             }
         }
