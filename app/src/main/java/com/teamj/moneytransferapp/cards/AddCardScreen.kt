@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -77,8 +78,11 @@ fun AddCardScreen(navController: NavController,modifier: Modifier = Modifier) {
                     )
                 },
                 actions = {
-                    Text(text = "Cancel",
-                        modifier = modifier.padding(end = 16.dp))
+                    TextButton(onClick = { navController.navigate(Route.HOME) }) {
+                        Text(text = "Cancel",
+                            modifier = modifier.padding(end = 16.dp))
+                    }
+
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor =  Color.Transparent,

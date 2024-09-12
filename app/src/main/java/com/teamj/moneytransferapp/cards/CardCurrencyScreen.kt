@@ -74,8 +74,10 @@ fun CardCountriesScreen(navController: NavController, modifier: Modifier = Modif
                     )
                 },
                 actions = {
-                    Text(text = "Cancel",
-                        modifier = modifier.padding(end = 16.dp))
+                    TextButton(onClick = { navController.navigate(Route.HOME) }) {
+                        Text(text = "Cancel",
+                            modifier = modifier.padding(end = 16.dp))
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor =  Color.Transparent,
