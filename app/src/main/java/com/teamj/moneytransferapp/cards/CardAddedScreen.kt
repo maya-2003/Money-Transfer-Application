@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
+import com.teamj.moneytransferapp.common.TopBar
+import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G100
 import com.teamj.moneytransferapp.ui.theme.G40
@@ -52,26 +54,7 @@ import com.teamj.moneytransferapp.ui.theme.P900
 fun CardAddedScreen(navController: NavController, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = "Back arrow icon"
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        "Banck Card OTP",
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.DarkGray
-                ),
-            )
+            TopBar(title = "Banck Card OTP", route = Route.HOME, navController = navController)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
@@ -85,14 +68,14 @@ fun CardAddedScreen(navController: NavController, modifier: Modifier = Modifier)
                 )
                 .padding(innerPadding)
         ) {
-            CardConnectionInfo()
+            CardConnectionInfo(navController)
         }
     }
 
 }
 
 @Composable
-fun CardConnectionInfo(modifier: Modifier = Modifier) {
+fun CardConnectionInfo(navController: NavController, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -154,14 +137,15 @@ fun CardConnectionInfo(modifier: Modifier = Modifier) {
             }
             Spacer(modifier = modifier.height(12.dp))
             Button(
-                onClick = { },
+                onClick = { navController.navigate(Route.HOME)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp)
                     .offset(y = 200.dp)
                     .border(
                         BorderStroke(2.dp, P300),
-                        RoundedCornerShape(8.dp)),
+                        RoundedCornerShape(8.dp)
+                    ),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,

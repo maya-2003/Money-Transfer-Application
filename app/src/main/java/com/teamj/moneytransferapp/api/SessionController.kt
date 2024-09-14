@@ -10,9 +10,15 @@ object SessionController {
     }
 
 
+    fun getToken(context: Context): String? {
+        val editor = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
+        return editor.getString("auth_token", "")
+    }
+
     fun clearSession(context: Context) {
         val editor = context.getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
-        editor.clear()
+        editor.remove("auth_token")
+        editor.remove("user_id")
         editor.apply()
     }
 

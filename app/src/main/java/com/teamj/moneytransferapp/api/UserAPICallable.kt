@@ -75,4 +75,8 @@ interface UserAPICallable {
     suspend fun deleteFav(
         @Body details: FavDelReq
     ): FavResp
+
+    @POST("/api/v1/auth/logout")
+    suspend fun logout(
+    ): Response<Unit>
 }

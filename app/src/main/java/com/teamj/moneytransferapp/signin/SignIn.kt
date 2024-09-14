@@ -1,5 +1,7 @@
 package com.teamj.moneytransferapp.signin
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +25,9 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -50,6 +56,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.MainActivity
+import com.teamj.moneytransferapp.api.viewmodels.LoginState
 import com.teamj.moneytransferapp.api.viewmodels.UserLoginViewModel
 import com.teamj.moneytransferapp.navigation.Route
 
@@ -58,6 +65,7 @@ import com.teamj.moneytransferapp.navigation.Route
 fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, viewModel: UserLoginViewModel = viewModel()) {
     val context= LocalContext.current
     val activity = context as? MainActivity
+    val loginState by viewModel.loginState.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -211,7 +219,6 @@ fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, vie
                             viewModel.loginUser(context, email.value, password.value) { token, id ->
                                 activity?.storePrefs(token, id)
                             }
-                            navController.navigate(Route.HOME)
                         }
                     }
                 },
@@ -226,6 +233,25 @@ fun SignInScreen(navController: NavController,modifier: Modifier = Modifier, vie
                     text = "Sign in",
                     fontSize = 16.sp
                 )
+            }
+
+            when (loginState) {
+                is LoginState.LoggingIn -> {
+                    CircularProgressIndicator()
+                }
+                is LoginState.LoggedIn -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Route.HOME) {
+                            popUpTo(0)
+                        }
+                    }
+                }
+                is LoginState.Error -> {
+                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show();
+                }
+                else -> {
+                    Log.d("loginError", "still processing")
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))

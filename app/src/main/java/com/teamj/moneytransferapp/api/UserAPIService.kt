@@ -1,6 +1,9 @@
 package com.teamj.moneytransferapp.api
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,7 +16,7 @@ object UserAPIService {
 
     fun initialize(context: Context, onTokenExpired: suspend () -> Unit) {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
-            val userPrefs = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
+            val userPrefs = context.applicationContext.getSharedPreferences("user_data", Context.MODE_PRIVATE)
             val token = userPrefs.getString("auth_token", null)
 
             val authRequest = chain.request().newBuilder().apply {
@@ -25,11 +28,9 @@ object UserAPIService {
             val serverResp = chain.proceed(authRequest)
 
             if (serverResp.code == 401) {
-                SessionController.clearSession(context)
+                SessionController.clearSession(context.applicationContext)
 
-                runBlocking {
-                    onTokenExpired()
-                }
+                GlobalScope.launch(Dispatchers.Main) { onTokenExpired() }
             }
 
             serverResp

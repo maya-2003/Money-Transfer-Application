@@ -218,19 +218,27 @@ fun CountryPicker(name: String, email: String, password: String,navController: N
             }
 
 
-            TextButton(onClick = { }) {
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = G100, fontSize = 16.sp, fontFamily = FontFamily(Font(R.font.inter_medium)))) {
-                            append("Already have an account? ")
-                        }
-
-
-                        withStyle(style = SpanStyle(color = P300, textDecoration=TextDecoration.Underline, fontFamily = FontFamily(Font(R.font.inter_medium)), fontSize = 16.sp)) {
-                            append("Sign in")
-                        }
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(text = "Already have an account? ",
+                    color = G100,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                    modifier = modifier
+                        .padding(top = 15.dp)
                 )
+
+                TextButton(onClick = {navController.navigate(Route.LOGIN)}) {
+                    Text(
+                        text = "Sign In",
+                        color = P300,
+                        textDecoration = TextDecoration.Underline,
+                        fontFamily = FontFamily(Font(R.font.inter_medium)),
+                        fontSize = 16.sp
+                    )
+                }
             }
 
 

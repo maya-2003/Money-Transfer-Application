@@ -31,6 +31,7 @@ import com.teamj.moneytransferapp.nowifi.InternetErrorScreen
 import com.teamj.moneytransferapp.onboarding.Onboarding
 import com.teamj.moneytransferapp.corefun.rememberConnectivityState
 import com.teamj.moneytransferapp.corefun.startInactivityTimer
+import com.teamj.moneytransferapp.logout.LogoutScreen
 import com.teamj.moneytransferapp.notifications.NotificationsScreen
 import com.teamj.moneytransferapp.signin.SignInScreen
 import com.teamj.moneytransferapp.signup.SignupScreen
@@ -69,6 +70,7 @@ object  Route{
     const val ONBOARDING = "onboarding"
     const val SPLASH = "splash"
     const val CARD_CURRENCY = "card_currency"
+    const val LOGOUT = "logout"
 
 }
 @Composable
@@ -179,6 +181,7 @@ fun AppNavHost(navController: NavHostController, onSendNotification: () -> Unit,
         composable(route = Route.SPLASH){ SplashScreen(navController) }
         composable(route = Route.CARD_CURRENCY){ CardCountriesScreen(navController) }
         composable(route = Route.NOTIFICATIONS){ NotificationsScreen(onSendNotification,navController) }
+        composable(route = Route.LOGOUT){ LogoutScreen(navController = navController)}
 
     }
 }

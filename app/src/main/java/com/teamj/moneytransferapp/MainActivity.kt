@@ -17,10 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.api.UserAPIService
 import com.teamj.moneytransferapp.navigation.AppNavHost
 import com.teamj.moneytransferapp.ui.theme.MoneyTransferAppTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +35,13 @@ class MainActivity : ComponentActivity() {
                 AppNavHost(navController,onSendNotification = { sendNotification(this) })
             }
             UserAPIService.initialize(this){
-                runOnUiThread {
-                    navController.navigate("login") {
-                        popUpTo(0)
+                lifecycleScope.launch {
+                    delay(500L)
+
+                    runOnUiThread {
+                        navController.navigate("login") {
+                            popUpTo(0)
+                        }
                     }
                 }
             }

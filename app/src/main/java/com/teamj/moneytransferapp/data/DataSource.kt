@@ -81,7 +81,7 @@ class DataSource {
         options.add(MoreItem(R.string.favourites, R.drawable.ic_star,Route.FAVORITES))
         options.add(MoreItem(R.string.profile, R.drawable.ic_user, Route.PROFILE))
         options.add(MoreItem(R.string.help, R.drawable.ic_error))
-        options.add(MoreItem(R.string.logout, R.drawable.ic_logout,Route.LOGIN))
+        options.add(MoreItem(R.string.logout, R.drawable.ic_logout,Route.LOGOUT))
         return options
     }
 
