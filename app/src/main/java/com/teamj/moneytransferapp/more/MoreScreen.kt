@@ -1,15 +1,12 @@
 package com.teamj.moneytransferapp.more
 
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,13 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -31,7 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,17 +39,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamj.moneytransferapp.R
 import com.teamj.moneytransferapp.common.NavBottomBar
 import com.teamj.moneytransferapp.common.TopBar
 import com.teamj.moneytransferapp.data.DataSource
+import com.teamj.moneytransferapp.api.viewmodels.LogoutViewModel
 import com.teamj.moneytransferapp.navigation.Route
 import com.teamj.moneytransferapp.ui.theme.G0
 import com.teamj.moneytransferapp.ui.theme.G200
@@ -113,8 +105,11 @@ fun MoreOptions(
     navController: NavController,
     moreItems: List<MoreItem>,
     onHelpClick: () -> Unit,
+    logoutViewModel: LogoutViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Column {
         LazyColumn(
             modifier = modifier
@@ -126,12 +121,18 @@ fun MoreOptions(
         ) {
             items(moreItems.size) { position ->
                 val item = moreItems[position]
-                val onItemClick = if (item.text == R.string.help) {
-                    { onHelpClick() }
-                } else {
-                    { navController.navigate(item.route) }
+                val onOptionClick = when (item.text) {
+                    R.string.help -> {
+                        { onHelpClick() }
+                    }
+                    R.string.logout -> {
+                        { logoutViewModel.logoutUser(context, navController) }
+                    }
+                    else -> {
+                        { navController.navigate(item.route) }
+                    }
                 }
-                MoreListItem(navController, onItemClick, item)
+                MoreListItem(navController, onOptionClick, item)
                 HorizontalDivider(
                     thickness = 1.dp,
                     modifier = modifier.padding(vertical = 8.dp),
@@ -139,20 +140,16 @@ fun MoreOptions(
                 )
             }
         }
-
     }
-
 }
-
 
 @Composable
 fun MoreListItem(
     navController: NavController,
-    onItemClick: () -> Unit,
+    onOptionClick: () -> Unit,
     moreItem: MoreItem,
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -172,18 +169,14 @@ fun MoreListItem(
             fontSize = 20.sp
         )
         Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = { onItemClick() }) {
+        IconButton(onClick = onOptionClick) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = "Right arrow icon",
                 tint = G200
             )
-
         }
-
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -304,8 +297,9 @@ fun HelpBottomSheet(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
 
         }
     }
-
 }
+
+
 
 @Preview(showSystemUi = false)
 @Composable

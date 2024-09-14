@@ -115,7 +115,11 @@ fun TransferAmountScreen(navController: NavController, modifier: Modifier = Modi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier, viewModel: FavoritesViewModel= viewModel()) {
+fun TransferAmountInfo(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: FavoritesViewModel = viewModel()
+) {
     var showEditDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val contacts = remember { mutableStateListOf<Contacts>() }
@@ -188,7 +192,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                         .padding(start = 12.dp, end = 12.dp)
                         .height(110.dp)
 
-                    ) {
+                ) {
                     Text(
                         text = "Amount",
                         style = TextStyle(
@@ -295,11 +299,11 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                             textAlign = TextAlign.Center,
                         )
                     )
-                    IconButton(onClick = {showEditDialog = true}) {
+                    IconButton(onClick = { showEditDialog = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.fav_arrow),
                             contentDescription = null,
-                            tint=P300,
+                            tint = P300,
                             modifier = Modifier
                                 .width(20.dp)
                                 .height(20.dp)
@@ -393,7 +397,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
             Button(
                 onClick = {
                     navController.navigate("${Route.TRANSFER_CONFIRM}/$money/$rec_name/$rec_account")
-                          },
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
@@ -408,7 +412,7 @@ fun TransferAmountInfo(navController: NavController, modifier: Modifier=Modifier
                     fontFamily = FontFamily(Font(R.font.inter_medium)),
                 )
             }
-Spacer(modifier = modifier.height(16.dp))
+            Spacer(modifier = modifier.height(16.dp))
             if (showEditDialog) {
 
                 ModalBottomSheet(
@@ -417,7 +421,7 @@ Spacer(modifier = modifier.height(16.dp))
                     onDismissRequest = { showEditDialog = false }
                 ) {
 
-                    favouriteList.forEachIndexed { index, favos ->
+                    favouriteList.forEach { favos ->
 
                         Card(
                             modifier = Modifier
@@ -444,13 +448,9 @@ Spacer(modifier = modifier.height(16.dp))
 
 }
 
-@Composable
-fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit, viewModel: FavoritesViewModel = viewModel()) {
 
-    val favouriteList by viewModel.favoritesList.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.getFavorite()
-    }
+@Composable
+fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit) {
 
 
     Row(
@@ -465,18 +465,11 @@ fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit, v
 
             .padding(horizontal = 8.dp, vertical = 8.dp)
 
-            .background(
-
-                Color(0xFFF3E9EB), shape = RoundedCornerShape(16.dp)
-
-            )
-
-
     ) {
 
         Row(
 
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
 
             modifier = Modifier
 
@@ -511,38 +504,33 @@ fun FavoritePicker(name: String, account: String, onFavoriteClick: () -> Unit, v
             }
 
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
 
+            Column {
 
-            favouriteList.forEachIndexed { index, favos ->
+                Text(
 
+                    text = name,
 
-                Column {
+                    fontSize = 16.sp,
 
-                    Text(
-
-                        text = favos.recipientName,
-
-                        fontSize = 16.sp,
-
-                        color = Color.Black,
-
-                        )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-
-                        text = "Account xxxx${favos.recipientAccountNumber.takeLast(4)}",
-
-                        fontSize = 16.sp,
-
-                        color = G100
+                    color = Color.Black,
 
                     )
 
-                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+
+                    text = "Account xxxx${account.takeLast(4)}",
+
+                    fontSize = 16.sp,
+
+                    color = G100
+
+                )
+
 
             }
 
