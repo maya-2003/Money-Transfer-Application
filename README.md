@@ -47,3 +47,33 @@ Users can save and manage favorite recipients for quicker transfers while also e
 
 ### Server Errors and Connectivity
 Users are informed about connectivity issues through specified screens in the design.
+
+..................................................................
+
+PATCH 1.2v (after deadline)
+
+Fixed Issues:
+
+-Fixed SignIn retention from Home Screen
+
+-MORE package: Modified logout option
+
+
+Additions:
+
+-Kotlin file Transfer.PH1: Fixed favorite card view in ModalSheet 
+
+-Added logout_view_model to viewmodels package
+
+
+Known Issues:
+
+-Error 404 does not navigate to its origin screen
+
+-Website option in more list does not redirect to any website
+
+-Adding Cards option are only made as a concept UI without saving real data in any database
+
+-In some occations InActive dialogue works incorrectly
+
+- Favorites Screen add's new favorites however fails to refresh the screen automatically after adding
