@@ -1,12 +1,3 @@
-### 💡 Proposed GitHub Repository Description
-*Update your repository description (the "About" section on the right side of your GitHub repo) to this:*
-
-> A secure and intuitive Android mobile banking application built with Kotlin and Jetpack Compose. Features real-time money transfers, favorite recipient management, secure authentication, and transaction history tracking.
-
----
-
-### 📄 Proposed README.md
-
 # 💸 Money Transfer Application
 
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
