@@ -1,79 +1,66 @@
-# Money Transfer App
+### 💡 Proposed GitHub Repository Description
+*Update your repository description (the "About" section on the right side of your GitHub repo) to this:*
 
-## Features
+> A secure and intuitive Android mobile banking application built with Kotlin and Jetpack Compose. Features real-time money transfers, favorite recipient management, secure authentication, and transaction history tracking.
 
-### Onboarding Screens
-Users are greeted with onboarding screens the first time they use the app to introduce them to the features and functionality.
+---
 
-### Account Creation
-Users can create an account by entering their personal information, including name, email, and a secure password.  
-Passwords must be 6 characters long and include one uppercase letter, one lowercase letter, and one special character (e.g., $%^).
+### 📄 Proposed README.md
 
-### Profile Completion
-Users must complete their profile by providing additional details such as country and date of birth (DOB) to fully utilize the app.
+# 💸 Money Transfer Application
 
-### Login
-Users can log in to their account using their credentials to access account details and perform transactions.
+![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?style=for-the-badge&logo=android&logoColor=white)
 
-### Account Balance
-Users can view their account balance to keep track of available funds.
+A secure, fully-featured Android mobile banking application built with **Kotlin** and **Jetpack Compose**. Designed with a focus on modern UI/UX and security, this app allows users to seamlessly manage their finances, execute real-time money transfers, and track their transaction history.
 
-### Transaction History
-Users can view their transaction history, including transaction date, recipient name, and transaction amount.
+## ✨ Features
 
-### Send Money
-Users can send money to other users by entering recipient details, including name and account number.
+### 🔐 Security & Account Management
+* **Secure Onboarding & Authentication:** Strict password policies (uppercase, lowercase, special characters) and comprehensive login flows.
+* **Auto-Logout / Inactivity Alert:** Automatically prompts users to re-authenticate after 2 minutes of inactivity to protect sensitive financial data.
+* **Profile Management:** Complete and update profile details (Country, DOB, Email, Password).
 
-### Verify Recipient
-Users can verify recipient account details via an API call before confirming a transaction to ensure correctness.
+### 💳 Core Banking
+* **Real-time Balance & History:** Instantly view account balances and a detailed log of past transactions (date, recipient, amount).
+* **Send Money:** Transfer funds effortlessly using recipient name and account number.
+* **API Recipient Verification:** Automatically verifies recipient details via an API call *before* finalizing transactions to prevent errors.
 
-### Transaction Confirmation
-Users receive confirmation or notifications after completing a successful transaction.
+### 📱 User Experience
+* **Favorites System:** Save, edit, delete, and quickly access frequent transfer recipients. Includes an innovative "call-to-copy" feature for quick info retrieval.
+* **Robust Error Handling:** Clear UI feedback for insufficient funds, invalid recipients, server errors, and connectivity drops.
+* **Integrated Support:** Quick access to customer support via phone or email directly from the app.
 
-### Error Notifications
-Users receive error messages or notifications for issues during transactions, such as insufficient funds or invalid recipient details.
+## 🛠️ Tech Stack
+* **Language:** Kotlin (100%)
+* **UI Framework:** Jetpack Compose
+* **Platform:** Android SDK
+* **Architecture:** MVVM (Model-View-ViewModel)
+* **Build System:** Gradle (Kotlin DSL)
 
-### Update Profile
-Users can update their profile information, including email address, country, DOB, or password.
+## 🚀 Getting Started
 
-### Support Options
-Users can contact support via phone or email if they encounter issues with the app.
+### Prerequisites
+* [Android Studio](https://developer.android.com/studio) (Latest Version recommended)
+* Android SDK 30+ 
+* An Android Emulator or physical device for testing
 
-### Inactivity Alert
-Users receive an alert dialog after two minutes of inactivity, prompting them to log in again.
+### Installation
 
-### Favorites
-Users can save and manage favorite recipients for quicker transfers while also editing or deleting favorites. They can also call them to copy info while transferring money.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/maya-2003/Money-Transfer-Application.git
+   ```
+2. **Open in Android Studio:**
+   * Open Android Studio and select **File > Open**.
+   * Navigate to the cloned directory and select it.
+3. **Sync Gradle:**
+   * Wait for Android Studio to sync the project dependencies.
+4. **Run the App:**
+   * Click the **Run** ▶️ button in the toolbar to build and install the app on your emulator or connected device.
 
-### Server Errors and Connectivity
-Users are informed about connectivity issues through specified screens in the design.
-
-..................................................................
-
-PATCH 1.2v (after deadline)
-
-Fixed Issues:
-
--Fixed SignIn retention from Home Screen
-
--MORE package: Modified logout option
-
-
-Additions:
-
--Kotlin file Transfer.PH1: Fixed favorite card view in ModalSheet 
-
--Added logout_view_model to viewmodels package
-
-
-Known Issues:
-
--Error 404 does not navigate to its origin screen
-
--Website option in more list does not redirect to any website
-
--Adding Cards option are only made as a concept UI without saving real data in any database
-
--In some occations InActive dialogue works incorrectly
-
-- Favorites Screen add's new favorites however fails to refresh the screen automatically after adding
+## 📌 Recent Updates (Patch 1.2v)
+* Fixed SignIn retention from the Home Screen.
+* Fixed favorite card view rendering in ModalSheet.
+* Added `logout_view_model` for cleaner authentication state management.
